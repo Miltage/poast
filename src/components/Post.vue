@@ -1,7 +1,7 @@
 <template>
   <div
     @click="viewPost"
-    class="rounded cursor-pointer px-4 py-4 hover:bg-gray-200"
+    class="cursor-pointer px-4 py-4 hover:bg-gray-200"
     v-bind:class="{ 'font-bold': $route.params.id == id }"
   >
     {{ data.title }} ({{ id }})

@@ -1,8 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import ChannelBody from "./components/ChannelBody.vue";
-import PostBody from "./components/PostBody.vue";
 
 Vue.use(Router);
 
@@ -17,29 +15,11 @@ export default new Router({
     },
     {
       path: "/channel/:name",
-      component: Home,
-      children: [
-        {
-          path: "",
-          component: ChannelBody
-        }
-      ]
+      component: Home
     },
     {
       path: "/channel/:name/:id",
-      component: Home,
-      children: [
-        {
-          path: "",
-          component: ChannelBody,
-          children: [
-            {
-              path: "",
-              component: PostBody
-            }
-          ]
-        }
-      ]
+      component: Home
     },
     {
       path: "/about",
