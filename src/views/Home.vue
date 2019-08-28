@@ -1,12 +1,14 @@
 <template>
   <div class="home h-screen">
     <div class="flex h-full">
-      <ul class="flex-initial rounded bg-white text-center m-4">
+      <ul
+        class="flex-initial w-48 rounded overflow-y-scroll bg-white text-center m-4"
+      >
         <template v-for="channel in channelList">
           <channel :name="channel.id" v-bind:key="channel.id" />
         </template>
       </ul>
-      <div class="flex-1 bg-white rounded text-left my-4">
+      <div class="flex-1 bg-white rounded overflow-y-scroll text-left my-4">
         <template v-for="post in postList">
           <post :id="post.id" :data="post.data()" v-bind:key="post.id" />
         </template>
