@@ -1,18 +1,45 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="home h-screen">
+    <div class="flex h-full">
+      <ul class="flex-initial rounded text-center m-4">
+        <template v-for="channel in channelList">
+          <channel :name="channel.id" v-bind:key="channel.id" />
+        </template>
+      </ul>
+      <div class="flex-1 h-full">
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Channel from "@/components/Channel.vue";
+import firebase from "firebase";
 
 export default {
   name: "home",
   components: {
-    HelloWorld
+    channel: Channel
+  },
+  data() {
+    return {
+      channelList: []
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    fetchData() {
+      firebase
+        .firestore()
+        .collection("channels")
+        .onSnapshot(snapshot => {
+          this.channelList = snapshot.docs;
+        });
+    }
   }
 };
 </script>

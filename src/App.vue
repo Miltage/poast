@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" class="hidden">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
@@ -9,6 +9,10 @@
 </template>
 
 <style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./assets/styles/default.css";
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
