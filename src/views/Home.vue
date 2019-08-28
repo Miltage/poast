@@ -1,7 +1,7 @@
 <template>
   <div class="home h-screen">
     <div class="flex h-full">
-      <ul class="flex-initial rounded text-center m-4">
+      <ul class="flex-initial rounded bg-white text-center m-4">
         <template v-for="channel in channelList">
           <channel :name="channel.id" v-bind:key="channel.id" />
         </template>

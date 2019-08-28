@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="bg-green-400">
     <div id="nav" class="hidden">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>

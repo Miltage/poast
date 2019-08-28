@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded overflow-y-scroll shadow-lg h-full">
+  <div class="rounded bg-white overflow-y-scroll shadow-lg h-full">
     <!--<img class="w-full" src="https://source.unsplash.com/random" alt="Sunset in the mountains">-->
     <iframe
       class="w-full"

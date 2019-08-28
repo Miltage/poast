@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-full">
-    <div class="flex-1 rounded text-left my-4">
+    <div class="flex-1 bg-white rounded text-left my-4">
       <!--{{ $route.params.name }}-->
       <template v-for="post in postList">
         <Post :id="post.id" :data="post.data()" v-bind:key="post.id" />
