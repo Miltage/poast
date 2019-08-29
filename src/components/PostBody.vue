@@ -27,7 +27,7 @@
             {{ data.desc }}
           </p>
         </div>
-        <div class="px-6 py-4">
+        <div class="px-6 py-2">
           <template v-for="channel in data.channels">
             <router-link
               :to="{ path: '/channel/' + channel }"
@@ -39,6 +39,20 @@
               >
             </router-link>
           </template>
+        </div>
+        <div class="flex items-center justify-around p-10">
+          <div class="post-icon">
+            <img src="../assets/icons/like.svg" />
+          </div>
+          <div class="post-icon">
+            <img src="../assets/icons/dislike.svg" />
+          </div>
+          <div class="post-icon">
+            <img src="../assets/icons/bookmark.svg" />
+          </div>
+          <div class="post-icon">
+            <img src="../assets/icons/flag.svg" />
+          </div>
         </div>
       </template>
     </template>
@@ -91,3 +105,18 @@ export default {
   }
 };
 </script>
+
+<style>
+.post-icon {
+  @apply flex items-center justify-center cursor-pointer py-2 px-4 rounded-lg w-24 h-24;
+}
+.post-icon:hover {
+  @apply bg-gray-300;
+}
+.post-icon:active {
+  @apply bg-blue-200;
+}
+.post-icon img {
+  @apply w-4/5 py-3 inline;
+}
+</style>
