@@ -1,19 +1,25 @@
 <template>
   <div class="rounded bg-white overflow-y-scroll shadow-lg h-full">
-    <!--<img class="w-full" src="https://source.unsplash.com/random" alt="Sunset in the mountains">-->
     <template v-if="id">
-      <iframe
-        class="w-full"
-        height="315"
-        src="https://www.youtube.com/embed/fOAcSwA8LnU"
-        frameborder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
       <div v-if="loading" class="px-6 py-4">
         Loading...
       </div>
       <template v-if="!loading">
+        <img
+          v-if="contentType == 'image'"
+          class="w-full"
+          :src="data.content"
+          :alt="data.title"
+        />
+        <iframe
+          v-if="contentType == 'youtube'"
+          class="w-full"
+          height="315"
+          :src="'https://www.youtube.com/embed/' + getYouTubeID()"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
         <div class="px-6 py-4">
           <div class="font-bold text-xl mb-2">{{ data.title }} ({{ id }})</div>
           <p class="text-gray-700 text-base">
@@ -50,6 +56,12 @@ export default {
       data: {}
     };
   },
+  computed: {
+    contentType: function() {
+      if (this.data.content.includes("youtube.com")) return "youtube";
+      return "image";
+    }
+  },
   watch: {
     // call again the method if the route changes
     $route: "fetchData"
@@ -72,6 +84,11 @@ export default {
           this.id = doc.id;
           this.data = doc.data();
         });
+    },
+
+    getYouTubeID() {
+      var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
+      return this.data.content.match(idregex)[1];
     }
   }
 };
