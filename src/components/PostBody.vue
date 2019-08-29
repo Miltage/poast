@@ -15,7 +15,9 @@
           v-if="contentType == 'youtube'"
           class="w-full"
           height="315"
-          :src="'https://www.youtube.com/embed/' + getYouTubeID()"
+          :src="
+            'https://www.youtube.com/embed/' + getYouTubeID(this.data.content)
+          "
           frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -46,6 +48,7 @@
 
 <script>
 import firebase from "firebase";
+import Post from "@/components/Post.vue";
 
 export default {
   name: "PostBody",
@@ -57,10 +60,7 @@ export default {
     };
   },
   computed: {
-    contentType: function() {
-      if (this.data.content.includes("youtube.com")) return "youtube";
-      return "image";
-    }
+    contentType: Post.contentType
   },
   watch: {
     // call again the method if the route changes
@@ -86,9 +86,9 @@ export default {
         });
     },
 
-    getYouTubeID() {
+    getYouTubeID(url) {
       var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
-      return this.data.content.match(idregex)[1];
+      return url.match(idregex)[1];
     }
   }
 };
