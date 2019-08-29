@@ -1,4 +1,5 @@
 <template>
+  <!-- Post ID: ({{ id }}) -->
   <div class="rounded bg-white overflow-y-scroll shadow-lg h-full">
     <template v-if="id">
       <div v-if="loading" class="px-6 py-4">
@@ -15,15 +16,13 @@
           v-if="contentType == 'youtube'"
           class="w-full"
           height="315"
-          :src="
-            'https://www.youtube.com/embed/' + getYouTubeID(this.data.content)
-          "
+          :src="'https://www.youtube.com/embed/' + getYouTubeID()"
           frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         ></iframe>
         <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">{{ data.title }} ({{ id }})</div>
+          <div class="font-bold text-xl mb-2">{{ data.title }}</div>
           <p class="text-gray-700 text-base">
             {{ data.desc }}
           </p>
@@ -48,7 +47,7 @@
 
 <script>
 import firebase from "firebase";
-import Post from "@/components/Post.vue";
+import shared from "../shared";
 
 export default {
   name: "PostBody",
@@ -60,7 +59,7 @@ export default {
     };
   },
   computed: {
-    contentType: Post.contentType
+    contentType: shared.detectContentType
   },
   watch: {
     // call again the method if the route changes
@@ -85,10 +84,9 @@ export default {
           this.data = doc.data();
         });
     },
-
-    getYouTubeID(url) {
+    getYouTubeID() {
       var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
-      return url.match(idregex)[1];
+      return this.data.content.match(idregex)[1];
     }
   }
 };

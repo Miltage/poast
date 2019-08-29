@@ -6,12 +6,12 @@
   >
     <img
       v-if="contentType == 'image'"
-      class="w-1/12 flex-initial"
+      class="content-icon"
       src="../assets/icons/picture.svg"
     />
     <img
       v-if="contentType == 'youtube'"
-      class="w-1/12 flex-initial"
+      class="content-icon"
       src="../assets/icons/video-player.svg"
     />
     <div class="flex-1 mx-4">{{ data.title }}</div>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import shared from "../shared";
+
 export default {
   name: "Post",
   props: {
@@ -26,10 +28,7 @@ export default {
     data: Object
   },
   computed: {
-    contentType: function() {
-      if (this.data.content.includes("youtube.com")) return "youtube";
-      return "image";
-    }
+    contentType: shared.detectContentType
   },
   methods: {
     viewPost: function() {
@@ -40,3 +39,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.content-icon {
+  min-width: 2rem;
+  @apply flex-initial w-1/12;
+}
+</style>
