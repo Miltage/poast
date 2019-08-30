@@ -21,26 +21,8 @@
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         ></iframe>
-        <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">{{ data.title }}</div>
-          <p class="text-gray-700 text-base">
-            {{ data.desc }}
-          </p>
-        </div>
-        <div class="px-6 py-2">
-          <template v-for="channel in data.channels">
-            <router-link
-              :to="{ path: '/channel/' + channel }"
-              v-bind:key="channel"
-            >
-              <span
-                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-                >#{{ channel }}</span
-              >
-            </router-link>
-          </template>
-        </div>
-        <div class="flex items-center justify-around p-10">
+
+        <div class="flex items-center justify-around px-10 my-4">
           <div class="post-icon">
             <img src="../assets/icons/like.svg" />
           </div>
@@ -54,6 +36,45 @@
             <img src="../assets/icons/flag.svg" />
           </div>
         </div>
+
+        <div class="px-6">
+          <div class="font-bold text-xl">{{ data.title }}</div>
+          <p class="text-gray-700 text-base py-4">
+            {{ data.desc }}
+          </p>
+        </div>
+        <div class="px-6">
+          <template v-for="channel in data.channels">
+            <router-link
+              :to="{ path: '/channel/' + channel }"
+              v-bind:key="channel"
+            >
+              <span
+                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                >#{{ channel }}</span
+              >
+            </router-link>
+          </template>
+        </div>
+
+        <div class="flex justify-center max-w-sm mx-auto mt-6">
+          <div class="flex items-center px-6">
+            <img
+              class="block mx-0 flex-shrink-0 h-10 rounded-full"
+              src="https://randomuser.me/api/portraits/women/17.jpg"
+              alt="Avatar"
+            />
+            <div class="flex items-center text-center sm:text-left">
+              <p class="text-xl leading-tight m-3">Username</p>
+              <div
+                class="text-white bg-purple-500 border border-purple-500 text-xs font-semibold rounded p-1 leading-normal"
+              >
+                8,098
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="inline-block text-sm italic mb-10">Posted 4 days ago</span>
       </template>
     </template>
   </div>
@@ -108,7 +129,7 @@ export default {
 
 <style>
 .post-icon {
-  @apply flex items-center justify-center cursor-pointer py-2 px-4 rounded-lg w-24 h-24;
+  @apply flex items-center justify-center cursor-pointer py-2 px-4 rounded-lg w-20 h-20;
 }
 .post-icon:hover {
   @apply bg-gray-300;
