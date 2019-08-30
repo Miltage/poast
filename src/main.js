@@ -4,6 +4,7 @@ import router from "./router";
 import firebase from "firebase";
 
 Vue.config.productionTip = false;
+Vue.use(require("vue-moment"));
 
 const firebaseConfig = require("../firebase.config.json");
 

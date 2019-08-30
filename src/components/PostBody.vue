@@ -74,7 +74,9 @@
             </div>
           </div>
         </div>
-        <span class="inline-block text-sm italic mb-10">Posted 4 days ago</span>
+        <span v-if="data.created" class="inline-block text-sm italic mb-10"
+          >Posted {{ data.created.toDate() | moment("from") }}</span
+        >
       </template>
     </template>
   </div>
