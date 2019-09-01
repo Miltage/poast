@@ -36,9 +36,11 @@
             <button class="bevelButton">
               Submit
             </button>
-            <button class="bevelButton">
-              Login
-            </button>
+            <router-link to="/login">
+              <button class="bevelButton">
+                Login
+              </button>
+            </router-link>
           </div>
         </div>
       </nav>
