@@ -1,7 +1,9 @@
 <template>
   <div class="home h-screen">
     <div class="flex flex-col h-full">
-      <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-3">
+      <nav
+        class="flex items-center justify-between flex-wrap bg-teal-500 py-2 px-3"
+      >
         <div class="flex items-center flex-shrink-0 text-white mr-6">
           <svg
             class="fill-current h-8 w-8 mr-2"
@@ -33,10 +35,25 @@
             </a>-->
           </div>
           <div>
-            <button class="bevelButton">
-              Submit
-            </button>
-            <router-link to="/login">
+            <div class="flex items-center px-6" v-if="currentUser">
+              <button class="bevelButton">
+                Submit
+              </button>
+              <img
+                class="block mx-0 flex-shrink-0 h-8 rounded-full ml-5"
+                src="https://randomuser.me/api/portraits/women/17.jpg"
+                alt="Avatar"
+              />
+              <div class="flex items-center text-white font-bold text-left">
+                <p class="text-lg leading-tight m-3">Username</p>
+                <div
+                  class="text-white bg-purple-500 border border-purple-500 text-xs font-semibold rounded p-1 leading-normal"
+                >
+                  4,383
+                </div>
+              </div>
+            </div>
+            <router-link to="/login" v-if="!currentUser">
               <button class="bevelButton">
                 Login
               </button>
@@ -83,11 +100,16 @@ export default {
   data() {
     return {
       channelList: [],
-      postList: []
+      postList: [],
+      currentUser: null
     };
   },
   created() {
     this.fetchData();
+    firebase.auth().onAuthStateChanged(() => {
+      this.currentUser = firebase.auth().currentUser;
+      console.log(this.currentUser);
+    });
   },
   watch: {
     // call again the method if the route changes
@@ -118,13 +140,13 @@ export default {
 
 <style>
 .bevelButton {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded;
+  @apply bg-white text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow;
 }
 .bevelButton:hover {
-  @apply bg-blue-400 border-blue-500;
+  @apply bg-gray-100;
 }
 .bevelButton:active {
-  @apply border-b-0 border-t-4 bg-blue-600 border-blue-700 text-gray-300;
+  @apply bg-gray-300;
 }
 .bevelButton:focus {
   @apply outline-none;
