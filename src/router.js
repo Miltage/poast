@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Logout from "./views/Logout.vue";
+import Submit from "./views/Submit.vue";
 
 Vue.use(Router);
 
@@ -14,6 +15,10 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+    {
+      path: "/submit",
+      component: Submit
     },
     {
       path: "/channel/:name",

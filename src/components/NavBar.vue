@@ -34,9 +34,11 @@
       </div>
       <div v-if="!isLoading">
         <div class="flex items-center px-6" v-if="currentUser">
-          <button class="bevelButton">
-            Submit
-          </button>
+          <router-link to="/submit">
+            <button class="bevelButton">
+              Submit
+            </button>
+          </router-link>
           <img
             class="block mx-0 flex-shrink-0 h-8 rounded-full ml-5"
             src="https://randomuser.me/api/portraits/women/17.jpg"
