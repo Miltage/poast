@@ -57,7 +57,7 @@
           </template>
         </div>
 
-        <div class="flex justify-center max-w-sm mx-auto mt-6">
+        <div class="flex justify-center max-w-sm mx-auto mt-6 mb-2">
           <div class="flex items-center px-6">
             <img
               class="block mx-0 flex-shrink-0 h-10 rounded-full"
@@ -74,9 +74,10 @@
             </div>
           </div>
         </div>
-        <span v-if="data.created" class="inline-block text-sm italic mb-10"
+        <span v-if="data.created" class="inline-block text-sm italic"
           >Posted {{ data.created.toDate() | moment("from") }}</span
         >
+        <div class="h-10"></div>
       </template>
     </template>
   </div>
