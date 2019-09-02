@@ -14,7 +14,7 @@
                   Title
                 </label>
                 <input
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="title"
                   type="text"
                   placeholder="eg. Super Awesome Post!"
@@ -29,7 +29,7 @@
                   Description
                 </label>
                 <textarea
-                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
                   id="desc"
                   type="password"
                   v-model="desc"
@@ -45,7 +45,7 @@
                   URL
                 </label>
                 <input
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="title"
                   type="text"
                   placeholder="eg. https://www.youtube.com/watch?v=l3g0xkMAMrE"
@@ -105,6 +105,7 @@ export default {
       desc: "",
       content: "",
       isWorking: false,
+      count: 0,
       value: [],
       options: []
     };
@@ -119,19 +120,9 @@ export default {
   methods: {
     submit: function() {
       this.isWorking = true;
-      /*firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(
-          () => {
-            this.$router.push({ name: "home" });
-          },
-          err => {
-            alert("Oops... " + err.message);
-            this.isWorking = false;
-          }
-        );*/
+      this.getUniqueID(this.title);
     },
+
     fetchData() {
       firebase
         .firestore()
@@ -142,6 +133,7 @@ export default {
           });
         });
     },
+
     addTag(newTag) {
       const tag = {
         name: newTag,
@@ -149,6 +141,60 @@ export default {
       };
       this.options.push(tag);
       this.value.push(tag);
+    },
+
+    slugify(text) {
+      return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, "-") // Replace spaces with -
+        .replace(/[^w-]+/g, "") // Remove all non-word chars
+        .replace(/--+/g, "-") // Replace multiple - with single -
+        .replace(/^-+/, "") // Trim - from start of text
+        .replace(/-+$/, ""); // Trim - from end of text
+    },
+
+    getUniqueID(text) {
+      let id = this.slugify(text);
+      firebase
+        .firestore()
+        .collection("posts")
+        .doc(id)
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            // post with this id doesn't exist yet
+            this.createPost(id);
+          } else {
+            // post already exists on server
+            this.count++;
+            this.getUniqueID(text + "-" + this.count);
+          }
+        });
+      return id;
+    },
+    createPost(id) {
+      let channels = [];
+      this.value.forEach(v => {
+        channels.push(v.name);
+      });
+
+      let data = {
+        title: this.title,
+        desc: this.desc,
+        content: this.content,
+        channels: channels,
+        created: new Date()
+      };
+
+      firebase
+        .firestore()
+        .collection("posts")
+        .doc(id)
+        .set(data)
+        .then(() => {
+          this.$router.replace("channel/" + channels[0] + "/" + id);
+        });
     }
   }
 };

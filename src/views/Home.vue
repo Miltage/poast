@@ -50,7 +50,7 @@ export default {
     this.fetchData();
     firebase.auth().onAuthStateChanged(() => {
       this.currentUser = firebase.auth().currentUser;
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
     });
   },
   watch: {
