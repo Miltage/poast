@@ -7,16 +7,16 @@
           class="flex-initial w-48 rounded overflow-y-scroll bg-white text-center m-4"
         >
           <template v-for="channel in channelList">
-            <channel :name="channel.id" v-bind:key="channel.id" />
+            <Channel :name="channel.id" v-bind:key="channel.id" />
           </template>
         </ul>
         <div class="flex-1 bg-white rounded overflow-y-scroll text-left my-4">
           <template v-for="post in postList">
-            <post :id="post.id" :data="post.data()" v-bind:key="post.id" />
+            <Post :id="post.id" :data="post.data()" v-bind:key="post.id" />
           </template>
         </div>
         <div class="flex-1 text-center m-4 overflow-y-scroll">
-          <postBody />
+          <PostBody />
         </div>
       </div>
     </div>
@@ -34,10 +34,10 @@ import firebase from "firebase";
 export default {
   name: "home",
   components: {
-    channel: Channel,
-    post: Post,
-    postBody: PostBody,
-    NavBar: NavBar
+    Channel,
+    Post,
+    PostBody,
+    NavBar
   },
   data() {
     return {

@@ -18,7 +18,7 @@
                   id="title"
                   type="text"
                   placeholder="eg. Super Awesome Post!"
-                  v-model="email"
+                  v-model="title"
                 />
               </div>
               <div class="mb-4">
@@ -29,10 +29,10 @@
                   Description
                 </label>
                 <textarea
-                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 h-24 leading-tight focus:outline-none focus:shadow-outline"
+                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
                   id="desc"
                   type="password"
-                  v-model="password"
+                  v-model="desc"
                   placeholder="eg. Here's a little bit about this thing..."
                 />
                 <p class="text-red-500 text-xs italic">Generic error.</p>
@@ -49,7 +49,7 @@
                   id="title"
                   type="text"
                   placeholder="eg. https://www.youtube.com/watch?v=l3g0xkMAMrE"
-                  v-model="email"
+                  v-model="content"
                 />
               </div>
               <div class="mb-6">
@@ -57,6 +57,18 @@
                   Channels
                 </label>
                 <p class="text-xs italic mb-2">Select up to five.</p>
+                <Multiselect
+                  v-model="value"
+                  tag-placeholder="Add this channel"
+                  placeholder="Start typing..."
+                  label="name"
+                  track-by="code"
+                  :options="options"
+                  :multiple="true"
+                  :taggable="true"
+                  @tag="addTag"
+                  :max="5"
+                ></Multiselect>
               </div>
               <div class="flex items-center justify-between">
                 <button
@@ -81,7 +93,8 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-//import firebase from "firebase";
+import Multiselect from "vue-multiselect";
+import firebase from "firebase";
 
 export default {
   name: "login",
@@ -90,11 +103,18 @@ export default {
       url: "",
       title: "",
       desc: "",
-      isWorking: false
+      content: "",
+      isWorking: false,
+      value: [],
+      options: []
     };
   },
   components: {
-    NavBar: NavBar
+    NavBar,
+    Multiselect
+  },
+  created() {
+    this.fetchData();
   },
   methods: {
     submit: function() {
@@ -111,7 +131,27 @@ export default {
             this.isWorking = false;
           }
         );*/
+    },
+    fetchData() {
+      firebase
+        .firestore()
+        .collection("channels")
+        .onSnapshot(snapshot => {
+          snapshot.forEach(doc => {
+            this.options.push({ name: doc.id, code: doc.id });
+          });
+        });
+    },
+    addTag(newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
+      };
+      this.options.push(tag);
+      this.value.push(tag);
     }
   }
 };
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
