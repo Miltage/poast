@@ -14,12 +14,16 @@
                   Title
                 </label>
                 <input
-                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border rounded w-full mb-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="title"
                   type="text"
                   placeholder="eg. Super Awesome Post!"
                   v-model="title"
+                  v-bind:class="{ 'border-red-500': titleError }"
                 />
+                <p v-if="titleError" class="text-red-500 text-xs italic">
+                  {{ titleError }}
+                </p>
               </div>
               <div class="mb-4">
                 <label
@@ -29,13 +33,12 @@
                   Description
                 </label>
                 <textarea
-                  class="appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
                   id="desc"
                   type="password"
                   v-model="desc"
                   placeholder="eg. Here's a little bit about this thing..."
                 />
-                <p class="text-red-500 text-xs italic">Generic error.</p>
               </div>
               <div class="mb-4">
                 <label
@@ -45,12 +48,16 @@
                   URL
                 </label>
                 <input
-                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline"
                   id="title"
                   type="text"
                   placeholder="eg. https://www.youtube.com/watch?v=l3g0xkMAMrE"
                   v-model="content"
+                  v-bind:class="{ 'border-red-500': contentError }"
                 />
+                <p v-if="contentError" class="text-red-500 text-xs italic">
+                  {{ contentError }}
+                </p>
               </div>
               <div class="mb-6">
                 <label class="text-gray-700 text-sm font-bold mb-2" for="title">
@@ -68,7 +75,14 @@
                   :taggable="true"
                   @tag="addTag"
                   :max="5"
+                  class="mb-1"
+                  v-bind:class="{
+                    'border-red-500 border rounded': channelError
+                  }"
                 ></Multiselect>
+                <p v-if="channelError" class="text-red-500 text-xs italic">
+                  {{ channelError }}
+                </p>
               </div>
               <div class="flex items-center justify-between">
                 <button
@@ -104,6 +118,9 @@ export default {
       title: "",
       desc: "",
       content: "",
+      titleError: null,
+      contentError: null,
+      channelError: null,
       isWorking: false,
       count: 0,
       value: [],
@@ -119,6 +136,9 @@ export default {
   },
   methods: {
     submit: function() {
+      console.log(this.slugify(this.title));
+      if (!this.validate()) return;
+
       this.isWorking = true;
       this.getUniqueID(this.title);
     },
@@ -148,7 +168,7 @@ export default {
         .toString()
         .toLowerCase()
         .replace(/\s+/g, "-") // Replace spaces with -
-        .replace(/[^w-]+/g, "") // Remove all non-word chars
+        .replace(/[^\w-]+/g, "") // Remove all non-word chars
         .replace(/--+/g, "-") // Replace multiple - with single -
         .replace(/^-+/, "") // Trim - from start of text
         .replace(/-+$/, ""); // Trim - from end of text
@@ -173,7 +193,9 @@ export default {
         });
       return id;
     },
+
     createPost(id) {
+      console.log("Create post with id (" + id + ")");
       let channels = [];
       this.value.forEach(v => {
         channels.push(v.name);
@@ -195,6 +217,28 @@ export default {
         .then(() => {
           this.$router.replace("channel/" + channels[0] + "/" + id);
         });
+    },
+
+    validate() {
+      let errors = 0;
+
+      if (this.title.length < 3) {
+        this.titleError = "You need to enter at least 3 characters here.";
+        errors++;
+      } else this.titleError = null;
+
+      if (this.content.length == 0) {
+        this.contentError = "Definitely can't leave this blank, bro!";
+        errors++;
+      } else this.contentError = null;
+
+      if (this.value.length == 0) {
+        this.channelError =
+          "You're gonna need to select at least one channel here, pal.";
+        errors++;
+      } else this.channelError = null;
+
+      return errors == 0;
     }
   }
 };
