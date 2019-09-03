@@ -41,17 +41,45 @@
                 />
               </div>
               <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                  Content Type
+                </label>
+                <div class="flex">
+                  <div
+                    @click="contentType = 'image'"
+                    class="content-icon"
+                    v-bind:class="{ selected: contentType == 'image' }"
+                  >
+                    <img src="../assets/icons/picture.svg" />
+                  </div>
+                  <div
+                    @click="contentType = 'audio'"
+                    class="content-icon"
+                    v-bind:class="{ selected: contentType == 'audio' }"
+                  >
+                    <img src="../assets/icons/quavers.svg" />
+                  </div>
+                  <div
+                    @click="contentType = 'youtube'"
+                    class="content-icon"
+                    v-bind:class="{ selected: contentType == 'youtube' }"
+                  >
+                    <img src="../assets/icons/video-player.svg" />
+                  </div>
+                </div>
+              </div>
+              <div class="mb-4" v-if="contentType">
                 <label
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  for="title"
+                  for="content"
                 >
                   URL
                 </label>
                 <input
                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline"
-                  id="title"
+                  id="content"
                   type="text"
-                  placeholder="eg. https://www.youtube.com/watch?v=l3g0xkMAMrE"
+                  :placeholder="contentPlaceholder"
                   v-model="content"
                   v-bind:class="{ 'border-red-500': contentError }"
                 />
@@ -60,7 +88,10 @@
                 </p>
               </div>
               <div class="mb-6">
-                <label class="text-gray-700 text-sm font-bold mb-2" for="title">
+                <label
+                  class="text-gray-700 text-sm font-bold mb-2"
+                  for="channels"
+                >
                   Channels
                 </label>
                 <p class="text-xs italic mb-2">Select up to five.</p>
@@ -68,7 +99,7 @@
                   v-model="value"
                   tag-placeholder="Add this channel"
                   placeholder="Start typing..."
-                  label="name"
+                  label="channels"
                   track-by="code"
                   :options="options"
                   :multiple="true"
@@ -124,8 +155,23 @@ export default {
       isWorking: false,
       count: 0,
       value: [],
-      options: []
+      options: [],
+      contentType: null,
+      contentTypes: [
+        { name: "image", icon: "picture" },
+        { name: "youtube", icon: "video-player" },
+        { name: "audio", icon: "quavers" }
+      ],
+      placeholders: {
+        image: "eg. https://i.imgur.com/XqrHojK.jpg",
+        youtube: "eg. https://www.youtube.com/watch?v=6RFOkS4jOh8"
+      }
     };
+  },
+  computed: {
+    contentPlaceholder: function() {
+      return this.placeholders[this.contentType];
+    }
   },
   components: {
     NavBar,
@@ -245,3 +291,20 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style>
+.content-icon {
+  @apply flex items-center justify-center cursor-pointer py-2 px-4 rounded-lg w-20 h-20 m-1;
+}
+.content-icon:hover {
+  @apply bg-gray-300;
+}
+.content-icon:active {
+  @apply bg-blue-200;
+}
+.content-icon img {
+  @apply w-4/5 py-3 inline;
+}
+.content-icon.selected {
+  @apply bg-blue-300;
+}
+</style>
