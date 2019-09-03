@@ -10,12 +10,12 @@ const firebaseConfig = require("../firebase.config.json");
 
 firebase.initializeApp(firebaseConfig);
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount("#app");
-
 firebase.auth().onAuthStateChanged(() => {
+  new Vue({
+    router,
+    render: h => h(App)
+  }).$mount("#app");
+
   let user = firebase.auth().currentUser;
   if (user == null) Vue.prototype.$globalUser = null;
   else

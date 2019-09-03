@@ -49,11 +49,9 @@
         >
           <ul>
             <li class="cursor-pointer hover:text-blue-400">Settings</li>
-            <router-link :to="{ name: 'logout' }"
-              ><li class="cursor-pointer hover:text-blue-400">
-                Log out
-              </li></router-link
-            >
+            <li @click="logout" class="cursor-pointer hover:text-blue-400">
+              Log out
+            </li>
           </ul>
         </div>
       </div>
@@ -99,6 +97,11 @@ export default {
             this.isLoading = false;
           });
     });
+  },
+  methods: {
+    logout() {
+      firebase.auth().signOut();
+    }
   }
 };
 </script>

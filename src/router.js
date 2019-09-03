@@ -5,9 +5,11 @@ import Login from "./views/Login.vue";
 import Logout from "./views/Logout.vue";
 import Submit from "./views/Submit.vue";
 
+import firebase from "firebase";
+
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -18,7 +20,10 @@ export default new Router({
     },
     {
       path: "/submit",
-      component: Submit
+      component: Submit,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/channel/:name",
@@ -30,6 +35,7 @@ export default new Router({
     },
     {
       path: "/login",
+      name: "login",
       component: Login
     },
     {
@@ -48,3 +54,13 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !currentUser) next("login");
+  else next();
+});
+
+export default router;
