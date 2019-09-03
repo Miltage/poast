@@ -32,29 +32,30 @@
       </a> -->
     </div>
     <div v-if="!isLoading">
-      <div class="flex items-center px-6" v-if="currentUser">
+      <div class="flex top-0 right-0 items-center px-6" v-if="currentUser">
         <router-link to="/submit">
           <button class="bevelButton">
             Submit
           </button>
         </router-link>
-        <!-- <img
-          class="block mx-0 flex-shrink-0 h-8 rounded-full ml-5"
-          src="https://randomuser.me/api/portraits/women/17.jpg"
-          alt="Avatar"
-        />
-        <div class="flex items-center text-white font-bold text-left">
-          <p class="text-lg leading-tight m-3">Username</p>
-          <div
-            class="text-white bg-purple-500 border border-purple-500 text-xs font-semibold rounded p-1 leading-normal"
-          >
-            4,383
-          </div>
-        </div> -->
         <UserBadge
           :user="currentUser.name"
-          class="text-white font-bold h-8 ml-5"
+          class="cursor-pointer text-white font-bold h-8 ml-5"
+          @click.native="showList = !showList"
         />
+        <div
+          v-if="showList"
+          class="absolute flex justify-center right-0 mr-5 mt-24 w-32 flex px-4 py-2 bg-white rounded-lg shadow-xl"
+        >
+          <ul>
+            <li class="cursor-pointer hover:text-blue-400">Settings</li>
+            <router-link :to="{ name: 'logout' }"
+              ><li class="cursor-pointer hover:text-blue-400">
+                Log out
+              </li></router-link
+            >
+          </ul>
+        </div>
       </div>
       <router-link to="/login" v-if="!currentUser">
         <button class="bevelButton">
@@ -77,7 +78,8 @@ export default {
   data() {
     return {
       isLoading: true,
-      currentUser: null
+      currentUser: null,
+      showList: false
     };
   },
   created() {
