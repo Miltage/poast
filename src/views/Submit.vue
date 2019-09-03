@@ -1,155 +1,146 @@
 <template>
-  <div class="login h-screen">
-    <div class="flex flex-col h-full">
-      <NavBar />
-      <div class="overflow-y-scroll">
-        <div class="flex items-center justify-center m-10">
-          <div class="w-full max-w-lg text-left">
-            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-              <div class="mb-4">
-                <label
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  for="title"
-                >
-                  Title
-                </label>
-                <input
-                  class="appearance-none border rounded w-full mb-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="title"
-                  type="text"
-                  placeholder="eg. Super Awesome Post!"
-                  v-model="title"
-                  v-bind:class="{ 'border-red-500': titleError }"
-                />
-                <p v-if="titleError" class="text-red-500 text-xs italic">
-                  {{ titleError }}
-                </p>
-              </div>
-              <div class="mb-4">
-                <label
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  for="desc"
-                >
-                  Description
-                </label>
-                <textarea
-                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
-                  id="desc"
-                  type="password"
-                  v-model="desc"
-                  placeholder="eg. Here's a little bit about this thing..."
-                />
-              </div>
-              <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">
-                  Content Type
-                </label>
-                <div class="flex">
-                  <div
-                    @click="contentType = 'image'"
-                    class="content-option"
-                    v-bind:class="{ selected: contentType == 'image' }"
-                  >
-                    <img
-                      src="../assets/icons/picture.svg"
-                      alt="Image"
-                      title="Image"
-                    />
-                  </div>
-                  <div
-                    @click="contentType = 'audio'"
-                    class="content-option"
-                    v-bind:class="{ selected: contentType == 'audio' }"
-                  >
-                    <img
-                      src="../assets/icons/quavers.svg"
-                      alt="audio"
-                      title="Audio"
-                    />
-                  </div>
-                  <div
-                    @click="contentType = 'youtube'"
-                    class="content-option"
-                    v-bind:class="{ selected: contentType == 'youtube' }"
-                  >
-                    <img
-                      src="../assets/icons/video-player.svg"
-                      alt="youtube"
-                      title="Youtube"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="mb-4" v-if="contentType">
-                <label
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  for="content"
-                >
-                  URL
-                </label>
-                <input
-                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline"
-                  id="content"
-                  type="text"
-                  :placeholder="contentPlaceholder"
-                  v-model="content"
-                  v-bind:class="{ 'border-red-500': contentError }"
-                />
-                <p v-if="contentError" class="text-red-500 text-xs italic">
-                  {{ contentError }}
-                </p>
-              </div>
-              <div class="mb-6">
-                <label
-                  class="text-gray-700 text-sm font-bold mb-2"
-                  for="channels"
-                >
-                  Channels
-                </label>
-                <p class="text-xs italic mb-2">Select up to five.</p>
-                <Multiselect
-                  v-model="value"
-                  tag-placeholder="Add this channel"
-                  placeholder="Start typing..."
-                  label="name"
-                  track-by="code"
-                  :options="options"
-                  :multiple="true"
-                  :taggable="true"
-                  @tag="addTag"
-                  :max="5"
-                  class="mb-1"
-                  v-bind:class="{
-                    'border-red-500 border rounded': channelError
-                  }"
-                ></Multiselect>
-                <p v-if="channelError" class="text-red-500 text-xs italic">
-                  {{ channelError }}
-                </p>
-              </div>
-              <div class="flex items-center justify-between">
-                <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                  @click="submit"
-                  v-bind:class="{ 'opacity-50 cursor-not-allowed': isWorking }"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-            <p class="text-center text-white text-xs">
-              &copy;2019 Spread Eagle. All rights reserved.
+  <div class="overflow-y-scroll">
+    <div class="flex items-center justify-center m-10">
+      <div class="w-full max-w-lg text-left">
+        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="title"
+            >
+              Title
+            </label>
+            <input
+              class="appearance-none border rounded w-full mb-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="title"
+              type="text"
+              placeholder="eg. Super Awesome Post!"
+              v-model="title"
+              v-bind:class="{ 'border-red-500': titleError }"
+            />
+            <p v-if="titleError" class="text-red-500 text-xs italic">
+              {{ titleError }}
             </p>
           </div>
-        </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="desc"
+            >
+              Description
+            </label>
+            <textarea
+              class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 h-24 leading-tight focus:outline-none focus:shadow-outline"
+              id="desc"
+              type="password"
+              v-model="desc"
+              placeholder="eg. Here's a little bit about this thing..."
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              Content Type
+            </label>
+            <div class="flex">
+              <div
+                @click="contentType = 'image'"
+                class="content-option"
+                v-bind:class="{ selected: contentType == 'image' }"
+              >
+                <img
+                  src="../assets/icons/picture.svg"
+                  alt="Image"
+                  title="Image"
+                />
+              </div>
+              <div
+                @click="contentType = 'audio'"
+                class="content-option"
+                v-bind:class="{ selected: contentType == 'audio' }"
+              >
+                <img
+                  src="../assets/icons/quavers.svg"
+                  alt="audio"
+                  title="Audio"
+                />
+              </div>
+              <div
+                @click="contentType = 'youtube'"
+                class="content-option"
+                v-bind:class="{ selected: contentType == 'youtube' }"
+              >
+                <img
+                  src="../assets/icons/video-player.svg"
+                  alt="youtube"
+                  title="Youtube"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="mb-4" v-if="contentType">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="content"
+            >
+              URL
+            </label>
+            <input
+              class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline"
+              id="content"
+              type="text"
+              :placeholder="contentPlaceholder"
+              v-model="content"
+              v-bind:class="{ 'border-red-500': contentError }"
+            />
+            <p v-if="contentError" class="text-red-500 text-xs italic">
+              {{ contentError }}
+            </p>
+          </div>
+          <div class="mb-6">
+            <label class="text-gray-700 text-sm font-bold mb-2" for="channels">
+              Channels
+            </label>
+            <p class="text-xs italic mb-2">Select up to five.</p>
+            <Multiselect
+              v-model="value"
+              tag-placeholder="Add this channel"
+              placeholder="Start typing..."
+              label="name"
+              track-by="code"
+              :options="options"
+              :multiple="true"
+              :taggable="true"
+              @tag="addTag"
+              :max="5"
+              class="mb-1"
+              v-bind:class="{
+                'border-red-500 border rounded': channelError
+              }"
+            ></Multiselect>
+            <p v-if="channelError" class="text-red-500 text-xs italic">
+              {{ channelError }}
+            </p>
+          </div>
+          <div class="flex items-center justify-between">
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              @click="submit"
+              v-bind:class="{ 'opacity-50 cursor-not-allowed': isWorking }"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+        <p class="text-center text-white text-xs">
+          &copy;2019 Spread Eagle. All rights reserved.
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
 import Multiselect from "vue-multiselect";
 import firebase from "firebase";
 
@@ -186,7 +177,6 @@ export default {
     }
   },
   components: {
-    NavBar,
     Multiselect
   },
   created() {

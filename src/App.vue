@@ -1,12 +1,21 @@
 <template>
-  <div id="app" class="bg-indigo-300">
-    <div id="nav" class="hidden">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div id="app" class="bg-indigo-300 h-screen">
+    <div class="flex flex-col h-full">
+      <NavBar />
+      <router-view />
     </div>
-    <router-view />
   </div>
 </template>
+
+<script>
+import NavBar from "@/components/NavBar.vue";
+
+export default {
+  components: {
+    NavBar
+  }
+};
+</script>
 
 <style>
 @tailwind base;

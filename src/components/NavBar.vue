@@ -20,49 +20,47 @@
         ></router-link
       >
     </div>
-    <div class="w-auto block flex-grow flex items-center">
-      <div class="text-sm flex-grow">
-        <!--<a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
-          Docs
-        </a>
-        <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
-          Examples
-        </a>
-        <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white">
-          Blog
-        </a>-->
-      </div>
-      <div v-if="!isLoading">
-        <div class="flex items-center px-6" v-if="currentUser">
-          <router-link to="/submit">
-            <button class="bevelButton">
-              Submit
-            </button>
-          </router-link>
-          <!-- <img
-            class="block mx-0 flex-shrink-0 h-8 rounded-full ml-5"
-            src="https://randomuser.me/api/portraits/women/17.jpg"
-            alt="Avatar"
-          />
-          <div class="flex items-center text-white font-bold text-left">
-            <p class="text-lg leading-tight m-3">Username</p>
-            <div
-              class="text-white bg-purple-500 border border-purple-500 text-xs font-semibold rounded p-1 leading-normal"
-            >
-              4,383
-            </div>
-          </div> -->
-          <UserBadge
-            :user="currentUser.name"
-            class="text-white font-bold h-8 ml-5"
-          />
-        </div>
-        <router-link to="/login" v-if="!currentUser">
+    <div class="text-sm flex-grow">
+      <!-- <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
+        Docs
+      </a>
+      <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
+        Examples
+      </a>
+      <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white">
+        Blog
+      </a> -->
+    </div>
+    <div v-if="!isLoading">
+      <div class="flex items-center px-6" v-if="currentUser">
+        <router-link to="/submit">
           <button class="bevelButton">
-            Login
+            Submit
           </button>
         </router-link>
+        <!-- <img
+          class="block mx-0 flex-shrink-0 h-8 rounded-full ml-5"
+          src="https://randomuser.me/api/portraits/women/17.jpg"
+          alt="Avatar"
+        />
+        <div class="flex items-center text-white font-bold text-left">
+          <p class="text-lg leading-tight m-3">Username</p>
+          <div
+            class="text-white bg-purple-500 border border-purple-500 text-xs font-semibold rounded p-1 leading-normal"
+          >
+            4,383
+          </div>
+        </div> -->
+        <UserBadge
+          :user="currentUser.name"
+          class="text-white font-bold h-8 ml-5"
+        />
       </div>
+      <router-link to="/login" v-if="!currentUser">
+        <button class="bevelButton">
+          Login
+        </button>
+      </router-link>
     </div>
   </nav>
 </template>
