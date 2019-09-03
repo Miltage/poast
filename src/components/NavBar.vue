@@ -45,7 +45,7 @@
         />
         <div
           v-if="showList"
-          class="absolute flex justify-center right-0 mr-5 mt-24 w-32 flex px-4 py-2 bg-white rounded-lg shadow-xl"
+          class="absolute flex justify-center right-0 mr-5 mt-16 w-32 flex px-4 py-2 bg-white rounded-lg shadow"
         >
           <ul>
             <li class="cursor-pointer hover:text-blue-400">Settings</li>
@@ -84,16 +84,20 @@ export default {
   },
   created() {
     firebase.auth().onAuthStateChanged(() => {
+      this.isLoading = true;
+      this.showList = false;
       this.currentUser = firebase.auth().currentUser;
-      firebase
-        .firestore()
-        .collection("users")
-        .where("uid", "==", this.currentUser.uid)
-        .get()
-        .then(snapshot => {
-          this.currentUser.name = snapshot.docs[0].id;
-          this.isLoading = false;
-        });
+      if (!this.currentUser) this.isLoading = false;
+      else
+        firebase
+          .firestore()
+          .collection("users")
+          .where("uid", "==", this.currentUser.uid)
+          .get()
+          .then(snapshot => {
+            this.currentUser.name = snapshot.docs[0].id;
+            this.isLoading = false;
+          });
     });
   }
 };

@@ -17,13 +17,15 @@ new Vue({
 
 firebase.auth().onAuthStateChanged(() => {
   let user = firebase.auth().currentUser;
-  firebase
-    .firestore()
-    .collection("users")
-    .where("uid", "==", user.uid)
-    .get()
-    .then(snapshot => {
-      user.name = snapshot.docs[0].id;
-      Vue.prototype.$globalUser = user.name;
-    });
+  if (user == null) Vue.prototype.$globalUser = null;
+  else
+    firebase
+      .firestore()
+      .collection("users")
+      .where("uid", "==", user.uid)
+      .get()
+      .then(snapshot => {
+        user.name = snapshot.docs[0].id;
+        Vue.prototype.$globalUser = user.name;
+      });
 });
