@@ -47,21 +47,21 @@
                 <div class="flex">
                   <div
                     @click="contentType = 'image'"
-                    class="content-icon"
+                    class="content-option"
                     v-bind:class="{ selected: contentType == 'image' }"
                   >
                     <img src="../assets/icons/picture.svg" />
                   </div>
                   <div
                     @click="contentType = 'audio'"
-                    class="content-icon"
+                    class="content-option"
                     v-bind:class="{ selected: contentType == 'audio' }"
                   >
                     <img src="../assets/icons/quavers.svg" />
                   </div>
                   <div
                     @click="contentType = 'youtube'"
-                    class="content-icon"
+                    class="content-option"
                     v-bind:class="{ selected: contentType == 'youtube' }"
                   >
                     <img src="../assets/icons/video-player.svg" />
@@ -99,7 +99,7 @@
                   v-model="value"
                   tag-placeholder="Add this channel"
                   placeholder="Start typing..."
-                  label="channels"
+                  label="name"
                   track-by="code"
                   :options="options"
                   :multiple="true"
@@ -182,7 +182,6 @@ export default {
   },
   methods: {
     submit: function() {
-      console.log(this.slugify(this.title));
       if (!this.validate()) return;
 
       this.isWorking = true;
@@ -197,6 +196,7 @@ export default {
           snapshot.forEach(doc => {
             this.options.push({ name: doc.id, code: doc.id });
           });
+          console.log(this.options);
         });
     },
 
@@ -252,7 +252,8 @@ export default {
         desc: this.desc,
         content: this.content,
         channels: channels,
-        created: new Date()
+        created: new Date(),
+        author: firebase.auth().currentUser.uid
       };
 
       firebase
@@ -292,19 +293,19 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
-.content-icon {
+.content-option {
   @apply flex items-center justify-center cursor-pointer py-2 px-4 rounded-lg w-20 h-20 m-1;
 }
-.content-icon:hover {
+.content-option:hover {
   @apply bg-gray-300;
 }
-.content-icon:active {
+.content-option:active {
   @apply bg-blue-200;
 }
-.content-icon img {
+.content-option img {
   @apply w-4/5 py-3 inline;
 }
-.content-icon.selected {
+.content-option.selected {
   @apply bg-blue-300;
 }
 </style>
