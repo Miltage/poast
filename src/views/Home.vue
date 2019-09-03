@@ -1,18 +1,20 @@
 <template>
   <div class="flex overflow-hidden h-full">
     <ul
-      class="flex-initial w-48 rounded overflow-y-scroll bg-white text-center m-4"
+      class="flex-initial w-48 shadow rounded overflow-y-scroll bg-white text-center m-4"
     >
       <template v-for="channel in channelList">
         <Channel :name="channel.id" v-bind:key="channel.id" />
       </template>
     </ul>
-    <div class="flex-1 bg-white rounded overflow-y-scroll text-left my-4">
+    <div
+      class="flex-1 bg-white shadow rounded overflow-y-scroll text-left my-4"
+    >
       <template v-for="post in postList">
         <Post :id="post.id" :data="post.data()" v-bind:key="post.id" />
       </template>
     </div>
-    <div class="flex-1 text-center m-4 overflow-y-scroll">
+    <div class="flex-1 shadow text-center m-4 overflow-y-scroll">
       <PostBody />
     </div>
   </div>

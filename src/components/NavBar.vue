@@ -76,8 +76,8 @@ export default {
   },
   data() {
     return {
-      currentUser: null,
-      isLoading: true
+      isLoading: true,
+      currentUser: null
     };
   },
   created() {
