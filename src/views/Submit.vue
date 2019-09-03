@@ -50,21 +50,33 @@
                     class="content-option"
                     v-bind:class="{ selected: contentType == 'image' }"
                   >
-                    <img src="../assets/icons/picture.svg" />
+                    <img
+                      src="../assets/icons/picture.svg"
+                      alt="Image"
+                      title="Image"
+                    />
                   </div>
                   <div
                     @click="contentType = 'audio'"
                     class="content-option"
                     v-bind:class="{ selected: contentType == 'audio' }"
                   >
-                    <img src="../assets/icons/quavers.svg" />
+                    <img
+                      src="../assets/icons/quavers.svg"
+                      alt="audio"
+                      title="Audio"
+                    />
                   </div>
                   <div
                     @click="contentType = 'youtube'"
                     class="content-option"
                     v-bind:class="{ selected: contentType == 'youtube' }"
                   >
-                    <img src="../assets/icons/video-player.svg" />
+                    <img
+                      src="../assets/icons/video-player.svg"
+                      alt="youtube"
+                      title="Youtube"
+                    />
                   </div>
                 </div>
               </div>
@@ -193,10 +205,10 @@ export default {
         .firestore()
         .collection("channels")
         .onSnapshot(snapshot => {
+          this.options = [];
           snapshot.forEach(doc => {
             this.options.push({ name: doc.id, code: doc.id });
           });
-          console.log(this.options);
         });
     },
 

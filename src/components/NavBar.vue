@@ -39,7 +39,7 @@
               Submit
             </button>
           </router-link>
-          <img
+          <!-- <img
             class="block mx-0 flex-shrink-0 h-8 rounded-full ml-5"
             src="https://randomuser.me/api/portraits/women/17.jpg"
             alt="Avatar"
@@ -51,7 +51,11 @@
             >
               4,383
             </div>
-          </div>
+          </div> -->
+          <UserBadge
+            :user="currentUser.name"
+            class="text-white font-bold h-8 ml-5"
+          />
         </div>
         <router-link to="/login" v-if="!currentUser">
           <button class="bevelButton">
@@ -64,13 +68,14 @@
 </template>
 
 <script>
+import UserBadge from "@/components/UserBadge.vue";
 import firebase from "firebase";
 
 export default {
   name: "navbar",
-  props: {},
-  components: {},
-  methods: {},
+  components: {
+    UserBadge
+  },
   data() {
     return {
       currentUser: null,
@@ -79,9 +84,16 @@ export default {
   },
   created() {
     firebase.auth().onAuthStateChanged(() => {
-      this.isLoading = false;
       this.currentUser = firebase.auth().currentUser;
-      console.log(this.currentUser);
+      firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "==", this.currentUser.uid)
+        .get()
+        .then(snapshot => {
+          this.currentUser.name = snapshot.docs[0].id;
+          this.isLoading = false;
+        });
     });
   }
 };

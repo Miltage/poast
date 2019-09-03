@@ -57,23 +57,7 @@
           </template>
         </div>
 
-        <div class="flex justify-center max-w-sm mx-auto mt-6 mb-2">
-          <div class="flex items-center px-6">
-            <img
-              class="block mx-0 flex-shrink-0 h-10 rounded-full"
-              src="https://randomuser.me/api/portraits/women/17.jpg"
-              alt="Avatar"
-            />
-            <div class="flex items-center text-center sm:text-left">
-              <p class="text-xl leading-tight m-3">Username</p>
-              <div
-                class="text-white bg-purple-500 border border-purple-500 text-xs font-semibold rounded p-1 leading-normal"
-              >
-                8,098
-              </div>
-            </div>
-          </div>
-        </div>
+        <UserBadge :user="data.author" class="h-12 my-5" />
         <span v-if="data.created" class="inline-block text-sm italic"
           >Posted {{ data.created.toDate() | moment("from") }}</span
         >
@@ -84,6 +68,7 @@
 </template>
 
 <script>
+import UserBadge from "@/components/UserBadge.vue";
 import firebase from "firebase";
 import shared from "../shared";
 
@@ -95,6 +80,9 @@ export default {
       id: null,
       data: {}
     };
+  },
+  components: {
+    UserBadge
   },
   computed: {
     contentType: shared.detectContentType
