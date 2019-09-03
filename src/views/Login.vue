@@ -7,12 +7,16 @@
             Email
           </label>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             type="text"
             placeholder="example@domain.com"
             v-model="email"
+            v-bind:class="{ 'border-red-500': emailError }"
           />
+          <p v-if="emailError" class="text-red-500 text-xs italic">
+            {{ emailError }}
+          </p>
         </div>
         <div class="mb-6">
           <label
@@ -22,13 +26,19 @@
             Password
           </label>
           <input
-            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             type="password"
-            v-model="password"
             placeholder="**********"
+            v-model="password"
+            v-bind:class="{ 'border-red-500': passwordError }"
           />
-          <p class="text-red-500 text-xs italic">Please choose a password.</p>
+          <p v-if="passwordError" class="text-red-500 text-xs italic">
+            {{ passwordError }}
+          </p>
+          <p v-if="generalError" class="text-red-500 text-xs italic mt-4">
+            {{ generalError }}
+          </p>
         </div>
         <div class="flex items-center justify-between">
           <button
@@ -46,12 +56,14 @@
             Forgot Password?
           </a>
         </div>
-        <a
-          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 mt-6"
-          href="#"
-        >
-          Create Account
-        </a>
+        <div class="flex justify-center">
+          <a
+            class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 mt-6"
+            href="#"
+          >
+            Create Account
+          </a>
+        </div>
       </form>
       <p class="text-center text-white text-xs">
         &copy;2019 Spread Eagle. All rights reserved.
@@ -69,11 +81,16 @@ export default {
     return {
       email: "",
       password: "",
-      isWorking: false
+      isWorking: false,
+      emailError: null,
+      passwordError: null,
+      generalError: null
     };
   },
   methods: {
     login: function() {
+      if (!this.validate()) return;
+
       this.isWorking = true;
       firebase
         .auth()
@@ -83,10 +100,26 @@ export default {
             this.$router.push({ name: "home" });
           },
           err => {
-            alert("Oops... " + err.message);
+            this.generalError = err.message;
             this.isWorking = false;
           }
         );
+    },
+
+    validate() {
+      let errors = 0;
+
+      if (this.email.length == 0) {
+        errors++;
+        this.emailError = "You need to enter your email please.";
+      } else this.emailError = null;
+
+      if (this.password.length == 0) {
+        errors++;
+        this.passwordError = "You forgot to enter a password.";
+      } else this.passwordError = null;
+
+      return errors == 0;
     }
   }
 };
