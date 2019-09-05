@@ -17,15 +17,18 @@ firebase.auth().onAuthStateChanged(() => {
   }).$mount("#app");
 
   let user = firebase.auth().currentUser;
-  if (user == null) Vue.prototype.$globalUser = null;
-  else
+  if (user != null && user.displayName == null) {
     firebase
       .firestore()
       .collection("users")
       .where("uid", "==", user.uid)
       .get()
       .then(snapshot => {
-        user.name = snapshot.docs[0].id;
-        Vue.prototype.$globalUser = user.name;
+        let name = snapshot.docs[0].id;
+        user.updateProfile({
+          displayName: name,
+          photoURL: "https://example.com/jane-q-user/profile.jpg"
+        });
       });
+  }
 });

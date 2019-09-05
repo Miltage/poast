@@ -188,14 +188,9 @@ export default {
   },
   created() {
     this.fetchData();
-    console.log(this.$globalUser);
   },
   methods: {
     submit: function() {
-      if (!this.$globalUser) {
-        alert("User not defined!");
-        return;
-      }
       if (!this.validate()) return;
 
       this.isWorking = true;
@@ -267,7 +262,7 @@ export default {
         content: this.content,
         channels: channels,
         created: new Date(),
-        author: this.$globalUser
+        author: firebase.auth().currentUser.displayName
       };
 
       firebase
