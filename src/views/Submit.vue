@@ -76,6 +76,12 @@
                 />
               </div>
             </div>
+            <p
+              v-if="contentTypeError"
+              class="block text-red-500 text-xs italic mt-2"
+            >
+              {{ contentTypeError }}
+            </p>
           </div>
           <div class="mb-4" v-if="contentType">
             <label
@@ -154,6 +160,7 @@ export default {
       content: "",
       titleError: null,
       contentError: null,
+      contentTypeError: null,
       channelError: null,
       isWorking: false,
       count: 0,
@@ -280,6 +287,11 @@ export default {
         this.titleError = "You need to enter at least 3 characters here.";
         errors++;
       } else this.titleError = null;
+
+      if (this.contentType == null) {
+        this.contentTypeError = "You need to select a content type.";
+        errors++;
+      } else this.contentTypeError = null;
 
       if (this.content.length == 0) {
         this.contentError = "Definitely can't leave this blank, bro!";
