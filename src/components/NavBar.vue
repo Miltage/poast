@@ -85,7 +85,27 @@ export default {
       this.isLoading = true;
       this.showList = false;
       this.currentUser = firebase.auth().currentUser;
-      this.isLoading = false;
+
+      if (this.currentUser != null && this.currentUser.displayName == null) {
+        firebase
+          .firestore()
+          .collection("users")
+          .where("uid", "==", this.currentUser.uid)
+          .get()
+          .then(snapshot => {
+            let name = snapshot.docs[0].id;
+            this.currentUser
+              .updateProfile({
+                displayName: name,
+                photoURL: "https://example.com/jane-q-user/profile.jpg"
+              })
+              .then(() => {
+                console.log("updated");
+                this.currentUser = firebase.auth().currentUser;
+                this.isLoading = false;
+              });
+          });
+      } else this.isLoading = false;
     });
   },
   methods: {
