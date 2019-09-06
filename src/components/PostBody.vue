@@ -121,6 +121,7 @@ export default {
 
       this.fetchData();
       this.getBookmarkStatus();
+      this.getFlaggedStatus();
     },
 
     fetchData() {
@@ -149,6 +150,7 @@ export default {
           `users/${firebase.auth().currentUser.displayName}/bookmarks`
         )
         .doc(this.$route.params.id);
+
       bookmark.get().then(doc => {
         this.isSaved = doc.exists;
       });
@@ -169,6 +171,7 @@ export default {
         .firestore()
         .collection(path)
         .doc(this.$route.params.id);
+
       bookmark.get().then(doc => {
         if (doc.exists)
           bookmark.delete().then(() => {
@@ -181,8 +184,43 @@ export default {
       });
     },
 
+    getFlaggedStatus() {
+      var flag = firebase
+        .firestore()
+        .collection(`posts/${this.$route.params.id}/flags`)
+        .doc(firebase.auth().currentUser.displayName);
+
+      flag.get().then(doc => {
+        this.isFlagged = doc.exists;
+      });
+    },
+
     flagPost() {
+      if (!firebase.auth().currentUser) {
+        console.log("Not logged in");
+        return;
+      }
+      if (this.isWorking) return;
+
+      this.isWorking = true;
       this.isFlagged = !this.isFlagged;
+
+      let path = `posts/${this.$route.params.id}/flags`;
+      let flag = firebase
+        .firestore()
+        .collection(path)
+        .doc(firebase.auth().currentUser.displayName);
+
+      flag.get().then(doc => {
+        if (doc.exists)
+          flag.delete().then(() => {
+            this.isWorking = false;
+          });
+        else
+          flag.set({}).then(() => {
+            this.isWorking = false;
+          });
+      });
     }
   }
 };
