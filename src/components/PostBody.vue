@@ -2,8 +2,11 @@
   <!-- Post ID: ({{ id }}) -->
   <div class="rounded bg-white overflow-y-scroll shadow-lg h-full">
     <template v-if="id">
-      <div v-if="isLoading" class="px-6 py-4">
-        Loading...
+      <div
+        v-if="isLoading"
+        class="px-6 py-4 mt-24 flex items-center justify-center"
+      >
+        <img id="loading" class="w-16" src="../assets/icons/loading.svg" />
       </div>
       <template v-if="!isLoading">
         <img
@@ -297,5 +300,18 @@ export default {
 }
 .post-icon.depressed {
   @apply bg-blue-300;
+}
+
+#loading {
+  -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
 }
 </style>
