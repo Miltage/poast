@@ -26,14 +26,14 @@
           <div
             class="post-icon"
             v-bind:class="{ depressed: vote > 0 }"
-            @click="vote = 1"
+            @click="castVote(1)"
           >
             <img src="../assets/icons/like.svg" />
           </div>
           <div
             class="post-icon"
             v-bind:class="{ depressed: vote < 0 }"
-            @click="vote = -1"
+            @click="castVote(-1)"
           >
             <img src="../assets/icons/dislike.svg" />
           </div>
@@ -122,6 +122,7 @@ export default {
       this.fetchData();
       this.getBookmarkStatus();
       this.getFlaggedStatus();
+      this.getVoteStatus();
     },
 
     fetchData() {
@@ -221,6 +222,35 @@ export default {
             this.isWorking = false;
           });
       });
+    },
+
+    getVoteStatus() {
+      let path = `posts/${this.$route.params.id}/votes`;
+      let vote = firebase
+        .firestore()
+        .collection(path)
+        .doc(firebase.auth().currentUser.displayName);
+
+      vote.get().then(doc => {
+        if (doc.exists) this.vote = doc.data().value;
+      });
+    },
+
+    castVote(alignment) {
+      if (!firebase.auth().currentUser) {
+        console.log("Not logged in");
+        return;
+      }
+
+      this.vote = alignment;
+
+      let path = `posts/${this.$route.params.id}/votes`;
+      let vote = firebase
+        .firestore()
+        .collection(path)
+        .doc(firebase.auth().currentUser.displayName);
+
+      vote.set({ value: alignment });
     }
   }
 };
