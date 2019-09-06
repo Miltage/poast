@@ -233,6 +233,7 @@ export default {
 
       vote.get().then(doc => {
         if (doc.exists) this.vote = doc.data().value;
+        else this.vote = 0;
       });
     },
 
@@ -242,6 +243,7 @@ export default {
         return;
       }
 
+      var oldVote = this.vote;
       this.vote = alignment;
 
       let path = `posts/${this.$route.params.id}/votes`;
@@ -250,7 +252,31 @@ export default {
         .collection(path)
         .doc(firebase.auth().currentUser.displayName);
 
-      vote.set({ value: alignment });
+      let author = firebase
+        .firestore()
+        .collection("users")
+        .doc(this.data.author);
+
+      //vote.set({ value: alignment });
+
+      return firebase
+        .firestore()
+        .runTransaction(transaction => {
+          // This code may get re-run multiple times if there are conflicts.
+          return transaction.get(author).then(doc => {
+            transaction.update(author, {
+              klout: doc.data().klout - oldVote + this.vote
+            });
+
+            transaction.set(vote, { value: alignment });
+          });
+        })
+        .then(function() {
+          console.log("Transaction successfully committed!");
+        })
+        .catch(function(error) {
+          console.log("Transaction failed: ", error);
+        });
     }
   }
 };

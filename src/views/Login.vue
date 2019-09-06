@@ -7,7 +7,7 @@
             Email
           </label>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline"
+            class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             type="text"
             placeholder="example@domain.com"
@@ -26,7 +26,7 @@
             Password
           </label>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline"
+            class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             type="password"
             placeholder="**********"
