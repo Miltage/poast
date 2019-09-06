@@ -2,7 +2,7 @@
   <div v-if="data" class="flex max-w-sm mx-auto justify-center">
     <img
       class="block mx-0 flex-shrink-0 h-full rounded-full"
-      src="https://randomuser.me/api/portraits/women/17.jpg"
+      src="../assets/default.jpg"
       alt="Avatar"
     />
     <div class="flex items-center text-center text-left">
