@@ -39,7 +39,7 @@
           </button>
         </router-link>
         <UserBadge
-          :user="currentUser.name"
+          :user="currentUser.displayName"
           class="cursor-pointer text-white font-bold h-8 ml-5"
           @click.native="showList = !showList"
         />
@@ -85,17 +85,7 @@ export default {
       this.isLoading = true;
       this.showList = false;
       this.currentUser = firebase.auth().currentUser;
-      if (!this.currentUser) this.isLoading = false;
-      else
-        firebase
-          .firestore()
-          .collection("users")
-          .where("uid", "==", this.currentUser.uid)
-          .get()
-          .then(snapshot => {
-            this.currentUser.name = snapshot.docs[0].id;
-            this.isLoading = false;
-          });
+      this.isLoading = false;
     });
   },
   methods: {

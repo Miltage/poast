@@ -2,10 +2,10 @@
   <!-- Post ID: ({{ id }}) -->
   <div class="rounded bg-white overflow-y-scroll shadow-lg h-full">
     <template v-if="id">
-      <div v-if="loading" class="px-6 py-4">
+      <div v-if="isLoading" class="px-6 py-4">
         Loading...
       </div>
-      <template v-if="!loading">
+      <template v-if="!isLoading">
         <img
           v-if="contentType == 'image'"
           class="w-full"
@@ -23,16 +23,32 @@
         ></iframe>
 
         <div class="flex items-center justify-around px-10 my-4">
-          <div class="post-icon">
+          <div
+            class="post-icon"
+            v-bind:class="{ depressed: vote > 0 }"
+            @click="vote = 1"
+          >
             <img src="../assets/icons/like.svg" />
           </div>
-          <div class="post-icon">
+          <div
+            class="post-icon"
+            v-bind:class="{ depressed: vote < 0 }"
+            @click="vote = -1"
+          >
             <img src="../assets/icons/dislike.svg" />
           </div>
-          <div class="post-icon">
+          <div
+            class="post-icon"
+            v-bind:class="{ depressed: isSaved }"
+            @click="savePost()"
+          >
             <img src="../assets/icons/bookmark.svg" />
           </div>
-          <div class="post-icon">
+          <div
+            class="post-icon"
+            v-bind:class="{ depressed: isFlagged }"
+            @click="flagPost()"
+          >
             <img src="../assets/icons/flag.svg" />
           </div>
         </div>
@@ -57,7 +73,7 @@
           </template>
         </div>
 
-        <UserBadge :user="data.author" class="h-12 my-5" />
+        <UserBadge v-if="data.author" :user="data.author" class="h-12 my-5" />
         <span v-if="data.created" class="inline-block text-sm italic"
           >Posted {{ data.created.toDate() | moment("from") }}</span
         >
@@ -76,9 +92,13 @@ export default {
   name: "PostBody",
   data() {
     return {
-      loading: false,
+      isLoading: false,
+      isWorking: false,
       id: null,
-      data: {}
+      data: {},
+      vote: 0,
+      isFlagged: false,
+      isSaved: false
     };
   },
   components: {
@@ -89,30 +109,80 @@ export default {
   },
   watch: {
     // call again the method if the route changes
-    $route: "fetchData"
+    $route: "init"
   },
   created() {
-    this.fetchData();
+    this.init();
   },
+
   methods: {
-    fetchData() {
+    init() {
       if (!this.$route.params.id) return;
 
-      this.loading = true;
+      this.fetchData();
+      this.getBookmarkStatus();
+    },
+
+    fetchData() {
+      this.isLoading = true;
       let path = `posts/${this.$route.params.id}`;
       firebase
         .firestore()
         .doc(path)
         .get()
         .then(doc => {
-          this.loading = false;
+          this.isLoading = false;
           this.id = doc.id;
           this.data = doc.data();
         });
     },
+
     getYouTubeID() {
       var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
       return this.data.content.match(idregex)[1];
+    },
+
+    getBookmarkStatus() {
+      var bookmark = firebase
+        .firestore()
+        .collection(
+          `users/${firebase.auth().currentUser.displayName}/bookmarks`
+        )
+        .doc(this.$route.params.id);
+      bookmark.get().then(doc => {
+        this.isSaved = doc.exists;
+      });
+    },
+
+    savePost() {
+      if (!firebase.auth().currentUser) {
+        console.log("Not logged in");
+        return;
+      }
+      if (this.isWorking) return;
+
+      this.isWorking = true;
+      this.isSaved = !this.isSaved;
+
+      let path = `users/${firebase.auth().currentUser.displayName}/bookmarks`;
+      let bookmark = firebase
+        .firestore()
+        .collection(path)
+        .doc(this.$route.params.id);
+      bookmark.get().then(doc => {
+        if (doc.exists)
+          bookmark.delete().then(() => {
+            this.isWorking = false;
+          });
+        else
+          bookmark.set({}).then(() => {
+            this.isWorking = false;
+          });
+      });
+    },
+
+    flagPost() {
+      this.isFlagged = !this.isFlagged;
     }
   }
 };
@@ -130,5 +200,8 @@ export default {
 }
 .post-icon img {
   @apply w-4/5 py-3 inline;
+}
+.post-icon.depressed {
+  @apply bg-blue-300;
 }
 </style>
