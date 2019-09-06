@@ -1,6 +1,7 @@
 <template>
   <div class="flex overflow-hidden h-full">
     <ul
+      id="channel-nav"
       class="flex-initial w-48 shadow rounded overflow-y-scroll bg-white text-center m-4"
     >
       <template v-for="channel in channelList">
@@ -14,7 +15,7 @@
         <Post :id="post.id" :data="post.data()" v-bind:key="post.id" />
       </template>
     </div>
-    <div class="flex-1 shadow text-center m-4 overflow-y-scroll">
+    <div id="post-body" class="flex-1 shadow text-center m-4 overflow-y-scroll">
       <PostBody />
     </div>
   </div>
@@ -87,5 +88,14 @@ export default {
 }
 .bevelButton:focus {
   @apply outline-none;
+}
+
+#channel-nav {
+  min-width: 120px;
+}
+
+#post-body {
+  min-width: 400px;
+  max-width: 600px;
 }
 </style>
