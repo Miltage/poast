@@ -25,36 +25,42 @@
           allowfullscreen
         ></iframe>
 
-        <div class="flex items-center justify-around px-10 my-4">
+        <div v-show="loaded < 3" class="h-24"></div>
+        <transition name="fade">
           <div
-            class="post-icon"
-            v-bind:class="{ depressed: vote > 0 }"
-            @click="castVote(1)"
+            v-show="loaded >= 3"
+            class="flex items-center justify-around px-10 my-4 h-24"
           >
-            <img src="../assets/icons/like.svg" />
+            <div
+              class="post-icon"
+              v-bind:class="{ depressed: vote > 0 }"
+              @click="castVote(1)"
+            >
+              <img src="../assets/icons/like.svg" />
+            </div>
+            <div
+              class="post-icon"
+              v-bind:class="{ depressed: vote < 0 }"
+              @click="castVote(-1)"
+            >
+              <img src="../assets/icons/dislike.svg" />
+            </div>
+            <div
+              class="post-icon"
+              v-bind:class="{ depressed: isSaved }"
+              @click="savePost()"
+            >
+              <img src="../assets/icons/bookmark.svg" />
+            </div>
+            <div
+              class="post-icon"
+              v-bind:class="{ depressed: isFlagged }"
+              @click="flagPost()"
+            >
+              <img src="../assets/icons/flag.svg" />
+            </div>
           </div>
-          <div
-            class="post-icon"
-            v-bind:class="{ depressed: vote < 0 }"
-            @click="castVote(-1)"
-          >
-            <img src="../assets/icons/dislike.svg" />
-          </div>
-          <div
-            class="post-icon"
-            v-bind:class="{ depressed: isSaved }"
-            @click="savePost()"
-          >
-            <img src="../assets/icons/bookmark.svg" />
-          </div>
-          <div
-            class="post-icon"
-            v-bind:class="{ depressed: isFlagged }"
-            @click="flagPost()"
-          >
-            <img src="../assets/icons/flag.svg" />
-          </div>
-        </div>
+        </transition>
 
         <div class="px-6">
           <div class="font-bold text-xl">{{ data.title }}</div>
@@ -101,7 +107,8 @@ export default {
       data: {},
       vote: 0,
       isFlagged: false,
-      isSaved: false
+      isSaved: false,
+      loaded: 0
     };
   },
   components: {
@@ -122,10 +129,8 @@ export default {
     init() {
       if (!this.$route.params.id) return;
 
+      this.loaded = 0;
       this.fetchData();
-      this.getBookmarkStatus();
-      this.getFlaggedStatus();
-      this.getVoteStatus();
     },
 
     fetchData() {
@@ -139,6 +144,10 @@ export default {
           this.isLoading = false;
           this.id = doc.id;
           this.data = doc.data();
+
+          this.getBookmarkStatus();
+          this.getFlaggedStatus();
+          this.getVoteStatus();
         });
     },
 
@@ -153,10 +162,11 @@ export default {
         .collection(
           `users/${firebase.auth().currentUser.displayName}/bookmarks`
         )
-        .doc(this.$route.params.id);
+        .doc(this.id);
 
       bookmark.get().then(doc => {
         this.isSaved = doc.exists;
+        this.loaded++;
       });
     },
 
@@ -174,7 +184,7 @@ export default {
       let bookmark = firebase
         .firestore()
         .collection(path)
-        .doc(this.$route.params.id);
+        .doc(this.id);
 
       bookmark.get().then(doc => {
         if (doc.exists)
@@ -191,11 +201,12 @@ export default {
     getFlaggedStatus() {
       var flag = firebase
         .firestore()
-        .collection(`posts/${this.$route.params.id}/flags`)
+        .collection(`posts/${this.id}/flags`)
         .doc(firebase.auth().currentUser.displayName);
 
       flag.get().then(doc => {
         this.isFlagged = doc.exists;
+        this.loaded++;
       });
     },
 
@@ -209,7 +220,7 @@ export default {
       this.isWorking = true;
       this.isFlagged = !this.isFlagged;
 
-      let path = `posts/${this.$route.params.id}/flags`;
+      let path = `posts/${this.id}/flags`;
       let flag = firebase
         .firestore()
         .collection(path)
@@ -228,7 +239,7 @@ export default {
     },
 
     getVoteStatus() {
-      let path = `posts/${this.$route.params.id}/votes`;
+      let path = `posts/${this.id}/votes`;
       let vote = firebase
         .firestore()
         .collection(path)
@@ -237,6 +248,7 @@ export default {
       vote.get().then(doc => {
         if (doc.exists) this.vote = doc.data().value;
         else this.vote = 0;
+        this.loaded++;
       });
     },
 
@@ -249,7 +261,7 @@ export default {
       var oldVote = this.vote;
       this.vote = alignment;
 
-      let path = `posts/${this.$route.params.id}/votes`;
+      let path = `posts/${this.id}/votes`;
       let vote = firebase
         .firestore()
         .collection(path)
@@ -313,5 +325,13 @@ export default {
   to {
     -webkit-transform: rotate(359deg);
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
