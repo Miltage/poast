@@ -11,9 +11,16 @@
     <div
       class="flex-1 bg-white shadow rounded overflow-y-scroll text-left my-4"
     >
-      <template v-for="post in postList">
-        <Post :id="post.id" :data="post.data()" v-bind:key="post.id" />
-      </template>
+      <transition-group name="post-list" tag="span">
+        <template v-for="post in postList">
+          <Post
+            class="post-list-item"
+            :id="post.id"
+            :data="post.data()"
+            v-bind:key="post.id"
+          />
+        </template>
+      </transition-group>
     </div>
     <div id="post-body" class="flex-1 shadow text-center m-4 overflow-y-scroll">
       <PostBody />
@@ -98,5 +105,16 @@ export default {
 #post-body {
   min-width: 400px;
   max-width: 600px;
+}
+
+.post-list-item {
+  transition: all 0.4s;
+}
+.post-list-enter, .post-list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.post-list-leave-active {
+  display: none;
 }
 </style>
