@@ -7,15 +7,15 @@ let db = admin.firestore();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  response.send("Hello from Firebase!");
-});
 
-exports.aggregateRatings = functions.firestore
+/*exports.helloWorld = functions.https.onRequest((request, response) => {
+  response.send("Hello from Firebase!");
+});*/
+
+exports.calcScore = functions.firestore
   .document("posts/{postId}/votes/{voteId}")
   .onWrite((change, context) => {
-    const oldVoteVal = change.before.data().value;
+    const oldVoteVal = change.before.exists ? change.before.data().value : 0;
     // Get value of the newly added rating
     const voteVal = change.after.data().value;
 
