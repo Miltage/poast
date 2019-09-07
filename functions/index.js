@@ -15,17 +15,22 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 exports.aggregateRatings = functions.firestore
   .document("posts/{postId}/votes/{voteId}")
   .onWrite((change, context) => {
+    const oldVoteVal = change.before.data().value;
     // Get value of the newly added rating
-    var voteVal = change.after.data().value;
+    const voteVal = change.after.data().value;
 
     // Get a reference to the restaurant
-    var postRef = db.collection("posts").doc(context.params.postId);
+    let postRef = db.collection("posts").doc(context.params.postId);
 
     // Update aggregations in a transaction
     return db.runTransaction(transaction => {
       return transaction.get(postRef).then(postDoc => {
+        var oldScore = postDoc.data().score;
+
+        if (!oldScore) oldScore = 0;
+
         // Compute new score
-        var newScore = postDoc.data().score + voteVal;
+        var newScore = oldScore - oldVoteVal + voteVal;
 
         // Update restaurant info
         return transaction.update(postRef, {
