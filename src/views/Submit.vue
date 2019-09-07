@@ -262,7 +262,8 @@ export default {
         content: this.content,
         channels: channels,
         created: new Date(),
-        author: firebase.auth().currentUser.displayName
+        author: firebase.auth().currentUser.displayName,
+        score: 0
       };
 
       firebase
