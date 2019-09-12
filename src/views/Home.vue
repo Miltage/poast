@@ -97,6 +97,12 @@ export default {
 .bevelButton:focus {
   @apply outline-none;
 }
+.bevelButton:disabled {
+  @apply text-gray-300 border-gray-200 cursor-default;
+}
+.bevelButton:disabled:hover {
+  @apply bg-white;
+}
 
 #channel-nav {
   min-width: 120px;

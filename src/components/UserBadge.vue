@@ -40,6 +40,7 @@ export default {
     doc.onSnapshot(
       snapshot => {
         this.data = snapshot.data();
+        console.log(this.data);
       },
       err => {
         console.log(`Encountered error: ${err}`);
