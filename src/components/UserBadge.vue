@@ -1,8 +1,9 @@
 <template>
-  <div v-if="data" class="flex max-w-sm mx-auto justify-center">
+  <div v-if="data" class="flex max-w-sm mx-auto justify-center items-center">
     <img
-      class="block mx-0 flex-shrink-0 h-full rounded-full"
-      src="../assets/default.jpg"
+      class="block mx-0 flex-shrink-0 object-cover rounded-full"
+      :src="avatarURL ? avatarURL : defaultAvatarPath"
+      :class="size"
       alt="Avatar"
     />
     <div class="flex items-center text-center text-left">
@@ -29,7 +30,9 @@ export default {
   methods: {},
   data() {
     return {
-      data: null
+      data: null,
+      defaultAvatarPath: require("../assets/default.jpg"),
+      avatarURL: null
     };
   },
   created() {
@@ -37,10 +40,14 @@ export default {
       .firestore()
       .collection("users")
       .doc(this.user);
+
     doc.onSnapshot(
       snapshot => {
         this.data = snapshot.data();
-        console.log(this.data);
+        var avatarRef = firebase.storage().ref(`avatars/${this.user}.jpg`);
+        avatarRef.getDownloadURL().then(url => {
+          this.avatarURL = url;
+        });
       },
       err => {
         console.log(`Encountered error: ${err}`);

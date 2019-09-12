@@ -40,6 +40,7 @@
         </router-link>
         <UserBadge
           :user="currentUser.displayName"
+          size="w-10 h-10"
           class="cursor-pointer text-white font-bold h-8 ml-5"
           @click.native="showList = !showList"
         />
