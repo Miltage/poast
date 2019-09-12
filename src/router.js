@@ -5,6 +5,7 @@ import Login from "./views/Login.vue";
 import Logout from "./views/Logout.vue";
 import Submit from "./views/Submit.vue";
 import Register from "./views/Register.vue";
+import Settings from "./views/Settings.vue";
 
 import firebase from "firebase";
 
@@ -48,6 +49,11 @@ const router = new Router({
       path: "/register",
       name: "register",
       component: Register
+    },
+    {
+      path: "/settings",
+      name: "settings",
+      component: Settings
     },
     {
       path: "/about",
