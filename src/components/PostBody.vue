@@ -62,6 +62,16 @@
           </div>
         </transition>
 
+        <div
+          v-if="authError"
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative m-10"
+          role="alert"
+        >
+          <span class="block sm:inline"
+            >You need to be logged in to do that.</span
+          >
+        </div>
+
         <div class="px-6">
           <div class="font-bold text-xl">{{ data.title }}</div>
           <p class="text-gray-700 text-base py-4">
@@ -113,7 +123,8 @@ export default {
       vote: 0,
       isFlagged: false,
       isSaved: false,
-      loaded: 0
+      loaded: 0,
+      authError: false
     };
   },
   components: {
@@ -134,7 +145,7 @@ export default {
     init() {
       if (!this.$route.params.id) return;
 
-      this.loaded = 0;
+      this.loaded = !firebase.auth() ? 5 : 0;
       this.fetchData();
     },
 
@@ -177,7 +188,7 @@ export default {
 
     savePost() {
       if (!firebase.auth().currentUser) {
-        console.log("Not logged in");
+        this.authError = true;
         return;
       }
       if (this.isWorking) return;
@@ -217,7 +228,7 @@ export default {
 
     flagPost() {
       if (!firebase.auth().currentUser) {
-        console.log("Not logged in");
+        this.authError = true;
         return;
       }
       if (this.isWorking) return;
@@ -259,7 +270,7 @@ export default {
 
     castVote(alignment) {
       if (!firebase.auth().currentUser) {
-        console.log("Not logged in");
+        this.authError = true;
         return;
       }
 
