@@ -32,6 +32,7 @@
             placeholder="**********"
             v-model="password"
             v-bind:class="{ 'border-red-500': passwordError }"
+            @keydown.enter="login"
           />
           <p v-if="passwordError" class="text-red-500 text-xs italic">
             {{ passwordError }}
