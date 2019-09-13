@@ -14,6 +14,11 @@
       class="content-icon"
       src="../assets/icons/video-player.svg"
     />
+    <img
+      v-if="contentType == 'soundcloud'"
+      class="content-icon"
+      src="../assets/icons/quavers.svg"
+    />
     <div class="flex-1 mx-4">{{ data.title }}</div>
   </div>
 </template>

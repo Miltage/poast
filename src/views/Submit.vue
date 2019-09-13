@@ -174,7 +174,8 @@ export default {
       ],
       placeholders: {
         image: "eg. https://i.imgur.com/XqrHojK.jpg",
-        youtube: "eg. https://www.youtube.com/watch?v=6RFOkS4jOh8"
+        youtube: "eg. https://www.youtube.com/watch?v=6RFOkS4jOh8",
+        audio: "eg. https://soundcloud.com/oddboy18/slowpoke-speedway"
       }
     };
   },

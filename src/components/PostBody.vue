@@ -24,6 +24,19 @@
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         ></iframe>
+        <iframe
+          v-if="contentType == 'soundcloud' && trackId"
+          width="100%"
+          height="200"
+          scrolling="no"
+          frameborder="no"
+          allow="autoplay"
+          :src="
+            'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' +
+              trackId +
+              '&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true'
+          "
+        ></iframe>
 
         <div v-show="loaded < 3" class="h-24"></div>
         <transition name="fade">
@@ -133,6 +146,24 @@ export default {
   computed: {
     contentType: shared.detectContentType
   },
+  asyncComputed: {
+    trackId() {
+      if (!this.data.content) return null;
+      if (this.contentType != "soundcloud") return null;
+
+      return new Promise(resolve => {
+        fetch(
+          "https://soundcloud.com/oembed?url=" +
+            encodeURI(this.data.content) +
+            "&format=json"
+        ).then(response => {
+          return response.json().then(json => {
+            resolve(json.html.match(/tracks%2F(.*?)&/s)[1]);
+          });
+        });
+      });
+    }
+  },
   watch: {
     // call again the method if the route changes
     $route: "init"
@@ -170,6 +201,18 @@ export default {
     getYouTubeID() {
       var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
       return this.data.content.match(idregex)[1];
+    },
+
+    getSoundcloudID() {
+      fetch(
+        "https://soundcloud.com/oembed?url=" +
+          encodeURI(this.data.content) +
+          "&format=json"
+      ).then(response => {
+        return response.json().then(json => {
+          this.trackId = json.html.match(/tracks%2F(.*?)&/s)[1];
+        });
+      });
     },
 
     getBookmarkStatus() {
