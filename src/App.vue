@@ -1,8 +1,10 @@
 <template>
-  <div id="app" class="bg-indigo-300 h-screen">
+  <div id="app" class="bg-teal-200 h-screen">
     <div class="flex flex-col h-full">
       <NavBar />
-      <router-view />
+      <div class="flex-auto w-full h-full overflow-y-scroll">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>

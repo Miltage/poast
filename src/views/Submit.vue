@@ -138,8 +138,8 @@
             </button>
           </div>
         </form>
-        <p class="text-center text-white text-xs">
-          &copy;2019 Spread Eagle. All rights reserved.
+        <p class="text-center text-gray-800 text-xs mb-10">
+          &copy;2019 Poast. All rights reserved.
         </p>
       </div>
     </div>
