@@ -123,7 +123,7 @@ export default {
   },
   asyncComputed: {
     usernameValid() {
-      var usernameRegex = /^(?=.{2,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+      var usernameRegex = /^[a-zA-Z0-9](_(?!(_))|(?![_]])|[a-zA-Z0-9]){2,18}[a-zA-Z0-9]$/;
       return usernameRegex.test(this.username);
     },
     usernameTaken() {
@@ -194,7 +194,8 @@ export default {
         this.usernameError = "Username is too short.";
       } else if (!this.usernameValid) {
         errors++;
-        this.usernameError = "Username contains invalid characters.";
+        this.usernameError =
+          "Your username may only conatin alphanumeric characters and the underscore (_).";
       } else this.usernameError = null;
 
       if (this.email.length == 0) {
