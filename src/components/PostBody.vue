@@ -42,7 +42,7 @@
         <transition name="fade">
           <div
             v-show="loaded >= 3"
-            class="flex items-center justify-around px-10 my-4 h-24"
+            class="flex items-center justify-around px-10 my-4 h-24 select-none"
           >
             <div
               class="post-icon"
@@ -176,7 +176,7 @@ export default {
     init() {
       if (!this.$route.params.id) return;
 
-      this.loaded = !firebase.auth() ? 5 : 0;
+      this.loaded = !firebase.auth().currentUser ? 5 : 0;
       this.fetchData();
     },
 
@@ -216,6 +216,8 @@ export default {
     },
 
     getBookmarkStatus() {
+      if (!firebase.auth().currentUser) return;
+
       var bookmark = firebase
         .firestore()
         .collection(
@@ -258,6 +260,8 @@ export default {
     },
 
     getFlaggedStatus() {
+      if (!firebase.auth().currentUser) return;
+
       var flag = firebase
         .firestore()
         .collection(`posts/${this.id}/flags`)
@@ -298,6 +302,8 @@ export default {
     },
 
     getVoteStatus() {
+      if (!firebase.auth().currentUser) return;
+
       let path = `posts/${this.id}/votes`;
       let vote = firebase
         .firestore()
