@@ -192,6 +192,8 @@ export default {
           this.id = doc.id;
           this.data = doc.data();
 
+          this.data.content = shared.parseContent(this.data.content);
+
           this.getBookmarkStatus();
           this.getFlaggedStatus();
           this.getVoteStatus();
