@@ -45,9 +45,14 @@ export default {
       snapshot => {
         this.data = snapshot.data();
         var avatarRef = firebase.storage().ref(`avatars/${this.user}.jpg`);
-        avatarRef.getDownloadURL().then(url => {
-          this.avatarURL = url;
-        });
+        avatarRef
+          .getDownloadURL()
+          .then(url => {
+            this.avatarURL = url;
+          })
+          .catch(function() {
+            // couldn't download file
+          });
       },
       err => {
         console.log(`Encountered error: ${err}`);

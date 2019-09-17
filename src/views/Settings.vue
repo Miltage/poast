@@ -69,10 +69,17 @@ export default {
     },
 
     updateAvatar() {
-      var avatarRef = firebase.storage().ref("avatars/miltage.jpg");
-      avatarRef.getDownloadURL().then(url => {
-        this.avatarURL = url;
-      });
+      var avatarRef = firebase
+        .storage()
+        .ref("avatars/" + firebase.auth().currentUser.displayName + ".jpg");
+      avatarRef
+        .getDownloadURL()
+        .then(url => {
+          this.avatarURL = url;
+        })
+        .catch(function() {
+          // couldn't download file
+        });
     },
 
     loaded() {
