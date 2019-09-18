@@ -5,7 +5,11 @@
       class="flex-initial w-48 shadow rounded overflow-y-scroll bg-white text-center m-4"
     >
       <template v-for="channel in channelList">
-        <Channel :name="channel.id" v-bind:key="channel.id" />
+        <Channel
+          :name="channel.id"
+          v-bind:key="channel.id"
+          :isLoading="false"
+        />
       </template>
     </ul>
     <div
@@ -50,7 +54,8 @@ export default {
     };
   },
   created() {
-    this.fetchData();
+    this.fetchChannels();
+    this.fetchPosts();
     firebase.auth().onAuthStateChanged(() => {
       this.currentUser = firebase.auth().currentUser;
       //console.log(this.currentUser);
@@ -58,17 +63,19 @@ export default {
   },
   watch: {
     // call again the method if the route changes
-    $route: "fetchData"
+    $route: "fetchPosts"
   },
   methods: {
-    fetchData() {
+    fetchChannels() {
       firebase
         .firestore()
         .collection("channels")
         .onSnapshot(snapshot => {
           this.channelList = snapshot.docs;
         });
+    },
 
+    fetchPosts() {
       if (this.$route.params.name) {
         firebase
           .firestore()
