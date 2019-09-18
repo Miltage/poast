@@ -1,8 +1,11 @@
 <template>
   <li
     @click="changeChannel"
-    class="w-auto block py-2 cursor-pointer hover:bg-gray-200 relative"
-    v-bind:class="{ 'font-bold bg-gray-200': $route.params.name == name }"
+    class="w-auto block py-2 cursor-pointer hover:bg-teal-100 relative"
+    v-bind:class="{
+      'font-bold bg-teal-300 text-white hover:bg-teal-300':
+        $route.params.name == name
+    }"
   >
     #{{ name }}
     <div

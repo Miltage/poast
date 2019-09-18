@@ -2,7 +2,10 @@
   <div
     @click="viewPost"
     class="flex items-center cursor-pointer px-4 py-4 hover:bg-gray-200"
-    v-bind:class="{ 'font-bold': $route.params.id == id }"
+    v-bind:class="{
+      'font-bold bg-teal-400 text-white hover:bg-teal-400':
+        $route.params.id == id
+    }"
   >
     <img
       v-if="contentType == 'image'"
