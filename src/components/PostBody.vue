@@ -105,12 +105,14 @@
           </template>
         </div>
 
-        <UserBadge
-          v-if="data.author"
-          :user="data.author"
-          size="w-16 h-16"
-          class="h-12 my-6"
-        />
+        <router-link v-if="data" :to="/user/ + data.author">
+          <UserBadge
+            v-if="data.author"
+            :user="data.author"
+            size="w-16 h-16"
+            class="h-12 my-6"
+          />
+        </router-link>
         <span v-if="data.created" class="inline-block text-sm italic"
           >Posted {{ data.created.toDate() | moment("from") }}</span
         >
