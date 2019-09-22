@@ -22,6 +22,7 @@
             :id="post.id"
             :data="post.data()"
             v-bind:key="post.id"
+            prefix="channel"
           />
         </template>
       </transition-group>

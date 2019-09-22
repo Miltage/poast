@@ -33,7 +33,8 @@ export default {
   name: "Post",
   props: {
     id: String,
-    data: Object
+    data: Object,
+    prefix: String
   },
   computed: {
     contentType: shared.detectContentType
@@ -41,7 +42,7 @@ export default {
   methods: {
     viewPost: function() {
       this.$router.push({
-        path: `/channel/${this.$route.params.name}/${this.id}`
+        path: `/${this.prefix}/${this.$route.params.name}/${this.id}`
       });
     }
   }

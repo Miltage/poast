@@ -6,6 +6,7 @@ import Logout from "./views/Logout.vue";
 import Submit from "./views/Submit.vue";
 import Register from "./views/Register.vue";
 import Settings from "./views/Settings.vue";
+import Profile from "./views/Profile.vue";
 
 import firebase from "firebase";
 
@@ -34,6 +35,14 @@ const router = new Router({
     {
       path: "/channel/:name/:id",
       component: Home
+    },
+    {
+      path: "/user/:name",
+      component: Profile
+    },
+    {
+      path: "/user/:name/:id",
+      component: Profile
     },
     {
       path: "/login",

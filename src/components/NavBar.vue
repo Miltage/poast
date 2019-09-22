@@ -50,6 +50,11 @@
           class="absolute flex justify-center right-0 mr-5 mt-16 w-32 flex px-4 py-2 bg-white rounded-lg shadow"
         >
           <ul>
+            <router-link :to="/user/ + currentUser.displayName"
+              ><li class="cursor-pointer hover:text-blue-400">
+                Profile
+              </li></router-link
+            >
             <router-link to="/settings"
               ><li class="cursor-pointer hover:text-blue-400">
                 Settings
