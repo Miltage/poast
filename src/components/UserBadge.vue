@@ -1,5 +1,9 @@
 <template>
-  <div v-if="data" class="flex max-w-sm mx-auto justify-center items-center">
+  <router-link
+    v-if="data"
+    :to="/user/ + user"
+    class="flex max-w-sm mx-auto justify-center items-center"
+  >
     <img
       class="block mx-0 flex-shrink-0 object-cover rounded-full"
       :src="avatarURL ? avatarURL : defaultAvatarPath"
@@ -14,7 +18,7 @@
         {{ data.klout }}
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
