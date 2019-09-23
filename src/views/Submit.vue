@@ -253,8 +253,10 @@ export default {
     createPost(id) {
       console.log("Create post with id (" + id + ")");
       let channels = [];
+      let categories = [];
       this.value.forEach(v => {
-        channels.push(v.name);
+        categories.push(v.name);
+        channels.push(v.name.toLowerCase().trim());
       });
 
       let data = {
@@ -262,6 +264,7 @@ export default {
         desc: this.desc,
         content: this.content,
         channels: channels,
+        categories: categories,
         created: new Date(),
         author: firebase.auth().currentUser.displayName,
         score: 0

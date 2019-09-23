@@ -92,9 +92,22 @@
           </p>
         </div>
         <div class="px-6">
-          <template v-for="channel in data.channels">
+          <template v-if="data.categories">
             <router-link
-              :to="{ path: '/channel/' + channel }"
+              v-for="cat in data.categories"
+              :to="{ path: '/channel/' + cat.toLowerCase().trim() }"
+              v-bind:key="cat"
+            >
+              <span
+                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                >#{{ cat }}</span
+              >
+            </router-link>
+          </template>
+          <template v-else>
+            <router-link
+              v-for="channel in data.channels"
+              :to="{ path: '/channel/' + channel.toLowerCase().trim() }"
               v-bind:key="channel"
             >
               <span
