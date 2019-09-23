@@ -5,7 +5,7 @@
     >
       <div class="my-10">
         <UserBadge
-          :user="$route.params.name"
+          :user="user"
           size="w-16 h-16"
           class="cursor-pointer font-bold h-8"
           @click.native="showList = !showList"
@@ -46,15 +46,20 @@ export default {
   data() {
     return {
       postList: [],
-      currentUser: null
+      user: this.$route.params.name
     };
   },
   created() {
     this.fetchPosts();
   },
+  watch: {
+    // call again the method if the route changes
+    $route: "fetchPosts"
+  },
   methods: {
     fetchPosts() {
-      if (this.$route.params.name) {
+      this.user = this.$route.params.name;
+      if (this.user) {
         firebase
           .firestore()
           .collection("posts")

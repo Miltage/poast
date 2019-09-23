@@ -30,7 +30,6 @@ export default {
     size: String
   },
   components: {},
-  methods: {},
   data() {
     return {
       data: null,
@@ -38,29 +37,37 @@ export default {
       avatarURL: null
     };
   },
+  watch: {
+    user: "fetchUser"
+  },
   created() {
-    let doc = firebase
-      .firestore()
-      .collection("users")
-      .doc(this.user);
+    this.fetchUser();
+  },
+  methods: {
+    fetchUser() {
+      let doc = firebase
+        .firestore()
+        .collection("users")
+        .doc(this.user);
 
-    doc.onSnapshot(
-      snapshot => {
-        this.data = snapshot.data();
-        var avatarRef = firebase.storage().ref(`avatars/${this.user}.jpg`);
-        avatarRef
-          .getDownloadURL()
-          .then(url => {
-            this.avatarURL = url;
-          })
-          .catch(function() {
-            // couldn't download file
-          });
-      },
-      err => {
-        console.log(`Encountered error: ${err}`);
-      }
-    );
+      doc.onSnapshot(
+        snapshot => {
+          this.data = snapshot.data();
+          var avatarRef = firebase.storage().ref(`avatars/${this.user}.jpg`);
+          avatarRef
+            .getDownloadURL()
+            .then(url => {
+              this.avatarURL = url;
+            })
+            .catch(function() {
+              // couldn't download file
+            });
+        },
+        err => {
+          console.log(`Encountered error: ${err}`);
+        }
+      );
+    }
   }
 };
 </script>
