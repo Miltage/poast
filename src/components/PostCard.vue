@@ -33,27 +33,52 @@
         </router-link>
       </template>
     </div>
-    <div class="mb-4">
-      <span class="italic px-2">{{
+    <div class="mb-4" v-if="author">
+      <span class="italic px-1">{{
         data.created.toDate() | moment("from")
       }}</span>
-      by {{ data.author }}
+      by
+      <router-link
+        :to="/user/ + data.author"
+        class="text-orange-500 hover:text-purple-500 font-bold"
+        >{{ author.displayName }}</router-link
+      >
     </div>
   </div>
 </template>
 
 <script>
 import PostContent from "@/components/PostContent.vue";
+import firebase from "firebase";
 
 export default {
   name: "postcard",
   props: {
     data: Object
   },
+  data() {
+    return {
+      author: null
+    };
+  },
   components: {
     PostContent
   },
-  methods: {}
+  created() {
+    this.getAuthor();
+  },
+  methods: {
+    getAuthor() {
+      let doc = firebase
+        .firestore()
+        .collection("users")
+        .doc(this.data.author);
+
+      doc.onSnapshot(snapshot => {
+        this.author = snapshot.data();
+      });
+    }
+  }
 };
 </script>
 

@@ -34,10 +34,12 @@ export default {
   props: {
     id: String,
     data: Object,
-    url: String,
     prefix: String
   },
   computed: {
+    url: function() {
+      return this.data.content;
+    },
     contentType: shared.detectContentType
   },
   methods: {

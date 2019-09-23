@@ -52,10 +52,6 @@ export default {
   created() {
     this.fetchPosts();
   },
-  watch: {
-    // call again the method if the route changes
-    $route: "fetchPosts"
-  },
   methods: {
     fetchPosts() {
       if (this.$route.params.name) {
