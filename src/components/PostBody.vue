@@ -9,34 +9,7 @@
         <img id="loading" class="w-16" src="../assets/icons/loading.svg" />
       </div>
       <template v-if="!isLoading">
-        <img
-          v-if="contentType == 'image'"
-          class="w-full"
-          :src="data.content"
-          :alt="data.title"
-        />
-        <iframe
-          v-if="contentType == 'youtube'"
-          class="w-full"
-          height="315"
-          :src="'https://www.youtube.com/embed/' + getYouTubeID()"
-          frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-        <iframe
-          v-if="contentType == 'soundcloud' && trackId"
-          width="100%"
-          height="200"
-          scrolling="no"
-          frameborder="no"
-          allow="autoplay"
-          :src="
-            'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' +
-              trackId +
-              '&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true'
-          "
-        ></iframe>
+        <PostContent :url="data.content" />
 
         <div v-show="loaded < 3" class="h-24"></div>
         <transition name="fade">
@@ -137,6 +110,7 @@
 
 <script>
 import UserBadge from "@/components/UserBadge.vue";
+import PostContent from "@/components/PostContent.vue";
 import firebase from "firebase";
 import shared from "../shared";
 
@@ -156,7 +130,8 @@ export default {
     };
   },
   components: {
-    UserBadge
+    UserBadge,
+    PostContent
   },
   computed: {
     url: function() {
