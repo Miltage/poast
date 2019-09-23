@@ -21,6 +21,7 @@
             class="post-list-item"
             :id="post.id"
             :data="post.data()"
+            :url="post.data().content"
             v-bind:key="post.id"
             prefix="channel"
           />

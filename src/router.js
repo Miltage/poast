@@ -7,6 +7,7 @@ import Submit from "./views/Submit.vue";
 import Register from "./views/Register.vue";
 import Settings from "./views/Settings.vue";
 import Profile from "./views/Profile.vue";
+import Featured from "./views/Featured.vue";
 
 import firebase from "firebase";
 
@@ -20,6 +21,11 @@ const router = new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+    {
+      path: "/featured",
+      name: "featured",
+      component: Featured
     },
     {
       path: "/submit",

@@ -34,6 +34,7 @@ export default {
   props: {
     id: String,
     data: Object,
+    url: String,
     prefix: String
   },
   computed: {

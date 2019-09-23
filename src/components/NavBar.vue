@@ -21,15 +21,22 @@
       >
     </div>
     <div class="text-sm flex-grow">
-      <!-- <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
-        Docs
-      </a>
-      <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
+      <router-link
+        :to="{ name: 'featured' }"
+        class="inline-block text-teal-200 hover:text-white mr-4"
+        >Featured</router-link
+      >
+      <router-link
+        :to="{ name: 'home' }"
+        class="inline-block text-teal-200 hover:text-white mr-4"
+        >Browse</router-link
+      >
+      <!--<a href="#responsive-header" class="inline-block text-teal-200 hover:text-white mr-4">
         Examples
       </a>
       <a href="#responsive-header" class="inline-block text-teal-200 hover:text-white">
         Blog
-      </a> -->
+      </a>-->
     </div>
     <div v-if="!isLoading">
       <div class="flex top-0 right-0 items-center px-6" v-if="currentUser">

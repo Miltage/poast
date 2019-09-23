@@ -99,7 +99,7 @@
               v-bind:key="cat"
             >
               <span
-                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mt-2"
                 >#{{ cat }}</span
               >
             </router-link>
@@ -111,7 +111,7 @@
               v-bind:key="channel"
             >
               <span
-                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                class="inline-block cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mt-2"
                 >#{{ channel }}</span
               >
             </router-link>
@@ -159,6 +159,9 @@ export default {
     UserBadge
   },
   computed: {
+    url: function() {
+      return this.data.content;
+    },
     contentType: shared.detectContentType
   },
   asyncComputed: {
