@@ -135,7 +135,7 @@ export default {
   },
   computed: {
     url: function() {
-      return this.data.content;
+      return shared.parseContent(this.data.content);
     },
     contentType: shared.detectContentType
   },
@@ -184,8 +184,6 @@ export default {
           this.isLoading = false;
           this.id = doc.id;
           this.data = doc.data();
-
-          this.data.content = shared.parseContent(this.data.content);
 
           this.getBookmarkStatus();
           this.getFlaggedStatus();

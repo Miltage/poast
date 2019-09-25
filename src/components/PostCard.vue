@@ -1,6 +1,6 @@
 <template>
   <div class="rounded overflow-hidden shadow bg-white max-w-md mb-5">
-    <PostContent :url="data.content" />
+    <PostContent :url="url" />
     <div class="px-6 py-4">
       <div class="font-bold text-xl mb-2">{{ data.title }}</div>
       <p class="text-gray-700 text-base mb-2" v-if="data.desc">
@@ -49,6 +49,7 @@
 
 <script>
 import PostContent from "@/components/PostContent.vue";
+import shared from "../shared";
 import firebase from "firebase";
 
 export default {
@@ -63,6 +64,11 @@ export default {
   },
   components: {
     PostContent
+  },
+  computed: {
+    url: function() {
+      return shared.parseContent(this.data.content);
+    }
   },
   created() {
     this.getAuthor();

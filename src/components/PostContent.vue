@@ -64,15 +64,7 @@ export default {
     }
   },
 
-  created() {
-    this.init();
-  },
-
   methods: {
-    init() {
-      this.url = shared.parseContent(this.url);
-    },
-
     getYouTubeID() {
       var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
       this.isLoading = false;
