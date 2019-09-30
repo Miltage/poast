@@ -56,10 +56,20 @@ export default {
         .orderBy("created", "desc")
         .limit(18)
         .onSnapshot(snapshot => {
-          var len = Math.floor(snapshot.docs.length / 3);
-          this.column1 = snapshot.docs.slice(0, len);
-          this.column2 = snapshot.docs.slice(len, len * 2);
-          this.column3 = snapshot.docs.slice(len * 2, len * 3 - 1);
+          var docs = snapshot.docs;
+          for (var i = 0; i < docs.length; i++) {
+            switch (i % 3) {
+              case 0:
+                this.column1.push(docs.shift());
+                break;
+              case 1:
+                this.column2.push(docs.shift());
+                break;
+              case 2:
+                this.column3.push(docs.shift());
+                break;
+            }
+          }
         });
     }
   }
