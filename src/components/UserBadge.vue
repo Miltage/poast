@@ -4,11 +4,19 @@
     class="flex max-w-sm mx-auto justify-center items-center select-none"
   >
     <img
+      v-if="avatarURL"
+      v-show="isLoaded"
       class="block mx-0 flex-shrink-0 object-cover rounded-full"
-      :src="avatarURL ? avatarURL : defaultAvatarPath"
+      :src="avatarURL"
       :class="size"
       alt="Avatar"
+      @load="isLoaded = true"
     />
+    <span
+      v-if="!isLoaded"
+      class="avatar-placeholder block mx-0 flex-shrink-0 bg-gray-500 rounded-full"
+      :class="size"
+    ></span>
     <div class="flex items-center text-center text-left">
       <p class="text-lg leading-tight m-3">{{ data.displayName }}</p>
       <div
@@ -34,7 +42,8 @@ export default {
     return {
       data: null,
       defaultAvatarPath: require("../assets/default.jpg"),
-      avatarURL: null
+      avatarURL: null,
+      isLoaded: false
     };
   },
   watch: {
@@ -59,8 +68,9 @@ export default {
             .then(url => {
               this.avatarURL = url;
             })
-            .catch(function() {
+            .catch(() => {
               // couldn't download file
+              this.avatarURL = this.defaultAvatarPath;
             });
         },
         err => {
@@ -71,3 +81,26 @@ export default {
   }
 };
 </script>
+
+<style>
+@keyframes changeColor {
+  0% {
+    @apply bg-gray-400;
+  }
+
+  50% {
+    @apply bg-gray-500;
+  }
+
+  100% {
+    @apply bg-gray-400;
+  }
+}
+
+.avatar-placeholder {
+  animation: changeColor ease;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+</style>
