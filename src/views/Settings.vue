@@ -40,7 +40,7 @@
 import firebase from "firebase";
 
 export default {
-  name: "register",
+  name: "settings",
   data() {
     return {
       isUploading: false,

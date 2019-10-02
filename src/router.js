@@ -8,6 +8,9 @@ import Register from "./views/Register.vue";
 import Settings from "./views/Settings.vue";
 import Profile from "./views/Profile.vue";
 import Featured from "./views/Featured.vue";
+import Admin from "./views/Admin.vue";
+import AdminDashboard from "./views/admin/Dashboard.vue";
+import AdminReports from "./views/admin/Reports.vue";
 
 import firebase from "firebase";
 
@@ -69,6 +72,20 @@ const router = new Router({
       path: "/settings",
       name: "settings",
       component: Settings
+    },
+    {
+      path: "/admin",
+      component: Admin,
+      children: [
+        {
+          path: "dashboard",
+          component: AdminDashboard
+        },
+        {
+          path: "reports",
+          component: AdminReports
+        }
+      ]
     },
     {
       path: "/about",

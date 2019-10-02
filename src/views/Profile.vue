@@ -37,7 +37,7 @@ import UserBadge from "@/components/UserBadge.vue";
 import firebase from "firebase";
 
 export default {
-  name: "home",
+  name: "profile",
   components: {
     Post,
     PostBody,

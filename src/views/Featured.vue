@@ -30,7 +30,7 @@ import PostCard from "@/components/PostCard.vue";
 import firebase from "firebase";
 
 export default {
-  name: "home",
+  name: "featured",
   components: {
     PostCard
   },

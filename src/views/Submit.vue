@@ -151,7 +151,7 @@ import Multiselect from "vue-multiselect";
 import firebase from "firebase";
 
 export default {
-  name: "login",
+  name: "submit",
   data() {
     return {
       url: "",
