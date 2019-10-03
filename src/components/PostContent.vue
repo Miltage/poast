@@ -1,31 +1,49 @@
 <template>
-  <div v-if="isLoading" class="px-6 py-4 flex items-center justify-center">
-    <img id="loading" class="w-8" src="../assets/icons/loading.svg" />
-  </div>
-  <div v-else>
-    <img v-if="contentType == 'image'" class="w-full" :src="url" :alt="url" />
-    <iframe
-      v-if="contentType == 'youtube'"
-      class="w-full"
-      height="315"
-      :src="'https://www.youtube.com/embed/' + getYouTubeID()"
-      frameborder="0"
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-    <iframe
-      v-if="contentType == 'soundcloud' && trackId"
-      width="100%"
-      height="200"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay"
-      :src="
-        'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' +
-          trackId +
-          '&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true'
-      "
-    ></iframe>
+  <div class="post-content relative">
+    <transition name="fade">
+      <div class="content flex">
+        <div
+          v-if="isLoading"
+          class="px-6 py-4 flex items-center justify-center h-full w-full absolute"
+        >
+          <img id="loading" class="w-12" src="../assets/icons/loading.svg" />
+        </div>
+        <img
+          v-if="contentType == 'image'"
+          class="w-full"
+          :src="url"
+          :alt="url"
+          @load="isLoading = false"
+          v-bind:class="{ 'opacity-0': isLoading, 'opacity-1': !isLoading }"
+        />
+        <iframe
+          v-if="contentType == 'youtube'"
+          class="w-full"
+          height="315"
+          :src="'https://www.youtube.com/embed/' + getYouTubeID()"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          @load="isLoading = false"
+          v-bind:class="{ 'opacity-0': isLoading, 'opacity-1': !isLoading }"
+        ></iframe>
+        <iframe
+          v-if="contentType == 'soundcloud' && trackId"
+          width="100%"
+          height="200"
+          scrolling="no"
+          frameborder="no"
+          allow="autoplay"
+          :src="
+            'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' +
+              trackId +
+              '&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true'
+          "
+          @load="isLoading = false"
+          v-bind:class="{ 'opacity-0': isLoading, 'opacity-1': !isLoading }"
+        ></iframe>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -39,8 +57,12 @@ export default {
   },
   data() {
     return {
-      isLoading: false
+      isLoading: true
     };
+  },
+  watch: {
+    // call again the method if the route changes
+    $route: "reset"
   },
   computed: {
     contentType: shared.detectContentType
@@ -65,9 +87,12 @@ export default {
   },
 
   methods: {
+    reset() {
+      this.isLoading = this.$route.params.id != null;
+    },
+
     getYouTubeID() {
       var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
-      this.isLoading = false;
       return this.url.match(idregex)[1];
     },
 
@@ -106,5 +131,14 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.content * {
+  transition: all 0.5s ease-out;
+}
+
+.post-content {
+  min-height: 14rem;
+  transition: all 0.5s;
 }
 </style>

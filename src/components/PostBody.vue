@@ -2,19 +2,11 @@
   <!-- Post ID: ({{ id }}) -->
   <div class="rounded bg-white overflow-y-scroll shadow-lg h-full">
     <template v-if="id">
-      <div
-        v-if="isLoading"
-        class="px-6 py-4 mt-24 flex items-center justify-center"
-      >
-        <img id="loading" class="w-16" src="../assets/icons/loading.svg" />
-      </div>
-      <template v-if="!isLoading">
+      <template>
         <PostContent :url="url" />
 
-        <div v-show="loaded < 3" class="h-24"></div>
         <transition name="fade">
           <div
-            v-show="loaded >= 3"
             class="flex items-center justify-around px-10 my-4 h-24 select-none"
           >
             <div
@@ -189,23 +181,6 @@ export default {
           this.getFlaggedStatus();
           this.getVoteStatus();
         });
-    },
-
-    getYouTubeID() {
-      var idregex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/i;
-      return this.data.content.match(idregex)[1];
-    },
-
-    getSoundcloudID() {
-      fetch(
-        "https://soundcloud.com/oembed?url=" +
-          encodeURI(this.data.content) +
-          "&format=json"
-      ).then(response => {
-        return response.json().then(json => {
-          this.trackId = json.html.match(/tracks%2F(.*?)&/s)[1];
-        });
-      });
     },
 
     getBookmarkStatus() {
@@ -391,5 +366,9 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.post-icon {
+  transition: all 0.25s;
 }
 </style>
