@@ -9,7 +9,7 @@
         <img id="loading" class="w-16" src="../assets/icons/loading.svg" />
       </div>
       <template v-if="!isLoading">
-        <PostContent :url="data.content" />
+        <PostContent :url="url" />
 
         <div v-show="loaded < 3" class="h-24"></div>
         <transition name="fade">
