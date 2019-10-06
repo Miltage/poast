@@ -42,14 +42,14 @@ export default {
     };
   },
   created() {
-    this.fetchPosts();
+    this.getLatest();
   },
   watch: {
     // call again the method if the route changes
     $route: "fetchPosts"
   },
   methods: {
-    fetchPosts() {
+    getLatest() {
       firebase
         .firestore()
         .collection("posts")
