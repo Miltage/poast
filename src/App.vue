@@ -6,6 +6,10 @@
         <router-view />
       </div>
     </div>
+    <!-- preload assets -->
+    <img class="hidden" src="./assets/icons/picture.svg" />
+    <img class="hidden" src="./assets/icons/video-player.svg" />
+    <img class="hidden" src="./assets/icons/quavers.svg" />
   </div>
 </template>
 
