@@ -55,10 +55,10 @@ export default {
     };
   },
   created() {
-    this.fetchChannels();
     this.fetchPosts();
     firebase.auth().onAuthStateChanged(() => {
       this.currentUser = firebase.auth().currentUser;
+      this.fetchChannels();
       //console.log(this.currentUser);
     });
   },
@@ -68,6 +68,18 @@ export default {
   },
   methods: {
     fetchChannels() {
+      if (this.currentUser) {
+        firebase
+          .firestore()
+          .collection("users/" + this.currentUser.displayName + "/channels")
+          .onSnapshot(snapshot => {
+            this.channelList = snapshot.docs;
+            if (snapshot.docs.length == 0) this.fetchDefaultChannels();
+          });
+      } else this.fetchDefaultChannels();
+    },
+
+    fetchDefaultChannels() {
       firebase
         .firestore()
         .collection("channels")
