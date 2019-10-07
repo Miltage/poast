@@ -57,8 +57,8 @@ export default {
         .limit(18)
         .onSnapshot(snapshot => {
           var docs = snapshot.docs;
-          for (var i = 0; i < docs.length; i++) {
-            switch (i % 3) {
+          while (docs.length > 0) {
+            switch (docs.length % 3) {
               case 0:
                 this.column1.push(docs.shift());
                 break;

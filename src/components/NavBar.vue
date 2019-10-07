@@ -67,16 +67,16 @@
     >
       <ul>
         <router-link :to="/user/ + currentUser.displayName"
-          ><li class="cursor-pointer hover:text-blue-400">
+          ><li class="cursor-pointer hover:text-blue-400 p-1">
             Profile
           </li></router-link
         >
         <router-link to="/settings"
-          ><li class="cursor-pointer hover:text-blue-400">
+          ><li class="cursor-pointer hover:text-blue-400 p-1">
             Settings
           </li></router-link
         >
-        <li @click="logout" class="cursor-pointer hover:text-blue-400">
+        <li @click="logout" class="cursor-pointer hover:text-blue-400 p-1">
           Log out
         </li>
       </ul>
