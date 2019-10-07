@@ -93,7 +93,8 @@ export default {
         firebase
           .firestore()
           .collection("posts")
-          .orderBy("score", "desc")
+          //.orderBy("score", "desc")
+          .orderBy("created", "desc")
           .where("channels", "array-contains", this.$route.params.name)
           .onSnapshot(snapshot => {
             this.postList = snapshot.docs;

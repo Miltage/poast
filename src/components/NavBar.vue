@@ -63,7 +63,7 @@
     <div
       v-if="showList"
       @click="showList = false"
-      class="absolute flex justify-center right-0 mr-2 mt-0 w-40 flex p-4 bg-white rounded-lg rounded-t-none shadow z-8"
+      class="absolute flex justify-center right-0 mr-2 mt-0 w-40 flex p-4 bg-white rounded-lg rounded-t-none shadow z-10"
     >
       <ul>
         <router-link :to="/user/ + currentUser.displayName"
