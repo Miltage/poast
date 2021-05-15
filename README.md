@@ -1,4 +1,4 @@
-# Spread Eagle
+# Poast
 
 This is a humble media-sharing app I built in Vue.js and hosted on Firebase so I could learn the technology.
 
